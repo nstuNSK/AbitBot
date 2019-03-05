@@ -4,7 +4,7 @@ import json
 
 secretKey = "ewkncejknjkehjckwencwekjh"
 accesString = "ce2190bb"
-groupId = "172501053"
+groupId = 172501053
 # Create your views here.
 def index(request):
     if request.method == "POST":
