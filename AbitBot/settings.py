@@ -25,7 +25,7 @@ SECRET_KEY = '_w_@$!xv-l2%-zs8)w+32o!(byboijgdk*(2ksez!cua074)k!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['abitbot.cloud.nstu.ru', 'www.abitbot.cloud.nstu.ru']
+ALLOWED_HOSTS = ['abitbot.cloud.nstu.ru', 'www.abitbot.cloud.nstu.ru', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    
+
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

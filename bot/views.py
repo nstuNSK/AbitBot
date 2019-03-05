@@ -9,6 +9,7 @@ groupId = 172501053
 def index(request):
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
+        print(data)
         if data["secret"] == secretKey:
-            if data["type"] == 'cofirmation' and data["group_id"] == groupId:
+            if data["type"] == 'confirmation' and data["group_id"] == groupId:
                 return HttpResponse(accesString)
