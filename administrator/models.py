@@ -21,15 +21,16 @@ class Subject(models.Model):
 
 class Direction(models.Model):
     """Направления"""
+    id              = models.IntegerField(primary_key=True)
     name            = models.CharField(max_length = 50, verbose_name = "Название")
     faculty         = models.CharField(max_length = 150, verbose_name = "Факультет")
     keys_plus       = models.CharField(max_length = 15, verbose_name = "Код направления")
-    ball_k          = models.IntegerField(verbose_name="Минимальный балл на контракт")
+    ball_k          = models.IntegerField(verbose_name="Минимальный балл на контракт", null = True)
     ball_b          = models.IntegerField(verbose_name="Минимальный балл на бюджет", null = True)
     url             = models.URLField(verbose_name="Ссылка на направление")
     active          = models.BooleanField(default=True, verbose_name="Активно")
-    description     = models.TextField(verbose_name="Описание")
-    profile_name    = models.CharField(max_length = 50, verbose_name = "Профиль")
+    description     = models.TextField(verbose_name="Описание", null = True)
+    profile_name    = models.CharField(max_length = 50, verbose_name = "Профиль", null = True)
     spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "direction", blank = True)
     subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "direction", blank = True)
 
@@ -95,7 +96,3 @@ class Test(models.Model):
     class Meta:
         verbose_name        = "Тест"
         verbose_name_plural = "Тесты"
-
-
-
-

@@ -13,3 +13,13 @@ def index(request):
         if data["secret"] == secretKey:
             if data["type"] == 'confirmation' and data["group_id"] == groupId:
                 return HttpResponse(accesString)
+    #         elif data["type"] == "message_new":
+    #             pass
+    #             """врубаем бота"""
+    #         elif:
+    #             return 
+    #     else:
+    #         return 
+    # else:
+    #     return 
+            
