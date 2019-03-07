@@ -18,7 +18,7 @@ def index(request):
                 elif data["type"] == "message_new":
                     obj = data["object"]
                     if "payload" in obj:
-                        bot.data_processing(id = obj["from_id"], pay = bytes(obj["payload"], 'cp1251').decode('utf-8'), msg = obj["text"])
+                        bot.data_processing(id = obj["from_id"], pay = bytes(obj["payload"], 'cp1251').decode('utf-8')[1:-1], msg = obj["text"])
                     else:
                         bot.data_processing(id = obj["from_id"], pay = " ", msg = obj["text"])
                 #elif data["type"] == "group_join":
