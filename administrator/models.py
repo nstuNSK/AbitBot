@@ -2,7 +2,7 @@ from django.db import models
 
 class Sphere(models.Model):
     """Сфера"""
-    
+
     name = models.CharField(max_length = 100, verbose_name = "Название")
 
     class Meta:
@@ -41,9 +41,10 @@ class Direction(models.Model):
 class Account(models.Model):
     """Аккаунт пользователя"""
 
-    id              = models.IntegerField(verbose_name="id", primary_key=True)
+    id              = models.IntegerField(verbose_name="id", primary_key = True)
+    random_id       = models.IntegerField(verbose_name="идентификатор сообщений", default = 0 )
     lk_code         = models.IntegerField(verbose_name="Код личного кабинета", default = 0)
-    subscribe       = models.BooleanField(default=False, verbose_name="Подписка")
+    subscribe       = models.BooleanField(default=False, verbose_name ="Подписка")
     last_news       = models.CharField(max_length = 100, verbose_name = "Последняя новость", default = "null")
     spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "account", blank = True)
     subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "account", blank = True)
@@ -57,7 +58,7 @@ class Msg(models.Model):
 
     pay = models.CharField(max_length = 50, verbose_name = "payload")
     msg = models.TextField(verbose_name="Сообщение")
-    
+
     class Meta:
         verbose_name        = "Сообщение"
         verbose_name_plural = "Сообщения"

@@ -11,4 +11,3 @@ def index(request):
         return HttpResponse("eboy")
     else:
         return HttpResponse("no boy")
-        

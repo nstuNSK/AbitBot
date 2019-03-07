@@ -15,19 +15,14 @@ def index(request):
             if data["group_id"] == groupId:
                 if data["type"] == 'confirmation':
                     return HttpResponse(accesString)
-                '''elif data["type"] == "message_new":
+                elif data["type"] == "message_new":
                     obj = data["object"]
                     if "payload" in obj:
-                        #bytes(pay, 'cp1251').decode('utf-8')
-                        bot.data_processing(id = obj["from_id"], 
-                                            pay = obj["payload"], 
-                                            msg = obj["text"])
+                        bot.data_processing(id = obj["from_id"], pay = bytes(obj["payload"], 'cp1251').decode('utf-8'), msg = obj["text"])
                     else:
-                        bot.data_processing(id = obj["from_id"],  
-                                            pay = None,
-                                            msg = obj["text"])'''
+                        bot.data_processing(id = obj["from_id"], pay = " ", msg = obj["text"])
                 #elif data["type"] == "group_join":
-                    
+
                 #elif data["type"] == "group_leave":
 
                 return HttpResponse("ok", status = 200)
