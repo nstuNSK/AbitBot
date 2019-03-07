@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 import json
+from . import bot
 
 secretKey = "ewkncejknjkehjckwencwekjh"
 accesString = "ce2190bb"
@@ -11,15 +12,22 @@ def index(request):
         data = json.loads(request.body.decode('utf-8'))
         print(data)
         if data["secret"] == secretKey:
-            if data["type"] == 'confirmation' and data["group_id"] == groupId:
-                return HttpResponse(accesString)
-    #         elif data["type"] == "message_new":
-    #             pass
-    #             """врубаем бота"""
-    #         elif:
-    #             return 
-    #     else:
-    #         return 
-    # else:
-    #     return 
-            
+            if data["group_id"] == groupId:
+                if data["type"] == 'confirmation':
+                    return HttpResponse(accesString)
+                '''elif data["type"] == "message_new":
+                    obj = data["object"]
+                    if "payload" in obj:
+                        #bytes(pay, 'cp1251').decode('utf-8')
+                        bot.data_processing(id = obj["from_id"], 
+                                            pay = obj["payload"], 
+                                            msg = obj["text"])
+                    else:
+                        bot.data_processing(id = obj["from_id"],  
+                                            pay = None,
+                                            msg = obj["text"])'''
+                #elif data["type"] == "group_join":
+                    
+                #elif data["type"] == "group_leave":
+
+                return HttpResponse("ok", status = 200)
