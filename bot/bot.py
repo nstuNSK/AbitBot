@@ -33,7 +33,7 @@ def search_direction(user, type):
             dir.append(subject.directions.all)
     if len(dir)!=0:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message":random.choice(from_pay_to_msg("SEARCH_DIRECTION_START"))[0]})
-        user.update(random_id = F("ranfom_id") + 1)
+        user.update(random_id = F("random_id") + 1)
         response = ""
         for item in dir:
             if item.profile_name == None:
@@ -42,11 +42,11 @@ def search_direction(user, type):
                 response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
             if(len(response)>3500):
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-                user.update(random_id = F("ranfom_id") + 1)
+                user.update(random_id = F("random_id") + 1)
                 response = ""
         if(response!=""):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-            user.update(random_id = F("ranfom_id") + 1)
+            user.update(random_id = F("random_id") + 1)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END"))[0], 'keyboard': get_main_keyboard(user = user)})
     else:
         if type == "SPHERE":
@@ -72,7 +72,7 @@ def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
     if pay=={"command":"start"} or pay == "admin":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
-        user.update(random_id = F("ranfom_id") + 1)
+        user.update(random_id = F("random_id") + 1)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("HELP_MSG")), "keyboard": get_main_keyboard(user = user)})
 
     elif msg=="admin":
@@ -143,7 +143,7 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
     else:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ERROR")), "keyboard": get_main_keyboard(user = user)})
-    user.update(random_id = F("ranfom_id") + 1)
+    Account.objects.filter(id = id).update(random_id = F("random_id") + 1)
 
 key = keyboards.get_keyboards()
 vk = auth()
