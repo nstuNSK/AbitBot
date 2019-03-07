@@ -33,7 +33,7 @@ def search_direction(user, type):
             dir.append(subject.directions.all)
     if len(dir)!=0:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message":random.choice(from_pay_to_msg("SEARCH_DIRECTION_START"))[0]})
-        user.update(random_id = F("random_id") + 1)
+        Account.objects.filter(id = user.id).update(random_id = F("random_id") + 1)
         response = ""
         for item in dir:
             if item.profile_name == None:
@@ -42,11 +42,11 @@ def search_direction(user, type):
                 response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
             if(len(response)>3500):
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-                user.update(random_id = F("random_id") + 1)
+                Account.objects.filter(id = user.id).update(random_id = F("random_id") + 1)
                 response = ""
         if(response!=""):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-            user.update(random_id = F("random_id") + 1)
+            Account.objects.filter(id = user.idid).update(random_id = F("random_id") + 1)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END"))[0], 'keyboard': get_main_keyboard(user = user)})
     else:
         if type == "SPHERE":
@@ -72,7 +72,7 @@ def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
     if pay=={"command":"start"} or pay == "admin":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
-        user.update(random_id = F("random_id") + 1)
+        Account.objects.filter(id = id).update(random_id = F("random_id") + 1)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("HELP_MSG")), "keyboard": get_main_keyboard(user = user)})
 
     elif msg=="admin":
@@ -83,17 +83,17 @@ def data_processing(id, pay, msg):
 
     elif pay=="subscribe":
         if user.subscribe == False:
-            user.update(subscribe = True)
+            Account.objects.filter(id = id).update(subscribe = True)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
         else:
-            user.update(subscribe = False)
+            Account.objects.filter(id = id).update(subscribe = False)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
 
     elif pay=="direction_selection":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("DIRECTION_SELECTION")), "keyboard":key['direction_selection']})
 
     elif pay=="sphere":
-        user.update(sphere = None)
+        Account.objects.filter(id = id).update(sphere = None)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SPHERE")), "keyboard":key['sphere']})
 
     elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Общество" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
@@ -109,7 +109,7 @@ def data_processing(id, pay, msg):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['sphere']})
 
     elif pay=="name_dir":
-        user.update(subjects = None)
+        Account.objects.filter(id = id).update(subjects = None)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("NAME_DIR")), "keyboard":key['subjects']})
 
     elif pay == "math" or pay == "biology" or pay == "geography" or pay == "foreign_language" or pay == "informatics" or pay == "history" or pay == "literature" or pay == "social_science" or pay == "physics" or pay == "chemistry":
