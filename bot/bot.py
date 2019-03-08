@@ -122,7 +122,7 @@ def data_processing(id, pay, msg):
             sub.account.remove(user)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("NAME_DIR")), "keyboard":key['subjects']})
 
-    elif pay == "math" or pay == "biology" or pay == "geography" or pay == "foreign_language" or pay == "informatics" or pay == "history" or pay == "literature" or pay == "social_science" or pay == "physics" or pay == "chemistry":
+    elif pay == "Математика" or pay == "Биология" or pay == "География" or pay == "Иностранный язык" or pay == "Информатика" or pay == "История" or pay == "Литература" or pay == "Обществознание" or pay == "Физика" or pay == "Химия":
         sub = user.subjects.all()
         if len(sub) !=0:
             if len(sub)<2:

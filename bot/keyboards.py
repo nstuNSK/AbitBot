@@ -111,20 +111,20 @@ def get_keyboards():
         "one_time": True,
         "buttons":[
             [
-                get_button(label="Математика",color="default",payload="math"),
-                get_button(label="Биология",color="default",payload="biology"),
-                get_button(label="География",color="default",payload="geography"),
-                get_button(label="Иностранный язык",color="default",payload="foreign_language")
+                get_button(label="Математика",color="default",payload="Математика"),
+                get_button(label="Биология",color="default",payload="Биология"),
+                get_button(label="География",color="default",payload="География"),
+                get_button(label="Иностранный язык",color="default",payload="Иностранный язык")
             ],
             [
-                get_button(label="Информатика",color="default",payload="informatics"),
-                get_button(label="История",color="default",payload="history"),
-                get_button(label="Литература",color="default",payload="literature")
+                get_button(label="Информатика",color="default",payload="Информатика"),
+                get_button(label="История",color="default",payload="История"),
+                get_button(label="Литература",color="default",payload="Литература")
             ],
             [
-                get_button(label="Обществознание",color="default",payload="social_science"),
-                get_button(label="Физика",color="default",payload="physics"),
-                get_button(label="Химия",color="default",payload="chemistry")
+                get_button(label="Обществознание",color="default",payload="Обществознание"),
+                get_button(label="Физика",color="default",payload="Физика"),
+                get_button(label="Химия",color="default",payload="Химия")
             ],
             [
                 get_button(label="Главное меню",color="primary",payload="main_menu"),
