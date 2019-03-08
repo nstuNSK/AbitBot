@@ -87,17 +87,19 @@ def data_processing(id, pay, msg):
 
     elif pay=="subscribe":
         if user.subscribe == False:
-            Account.objects.filter(id = id).update(subscribe = True)
+            user.subscribe = True
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
         else:
-            Account.objects.filter(id = id).update(subscribe = False)
+            user.subscribe = False
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
+        user.save()
 
     elif pay=="direction_selection":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("DIRECTION_SELECTION")), "keyboard":key['direction_selection']})
 
     elif pay=="sphere":
-        Account.objects.filter(id = id).update(spheres = None)
+        user.spheres = None
+        user.save()
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SPHERE")), "keyboard":key['sphere']})
 
     elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Общество" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
@@ -113,7 +115,8 @@ def data_processing(id, pay, msg):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['sphere']})
 
     elif pay=="name_dir":
-        Account.objects.filter(id = id).update(subjects = None)
+        user.subjects = None
+        user.save
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("NAME_DIR")), "keyboard":key['subjects']})
 
     elif pay == "math" or pay == "biology" or pay == "geography" or pay == "foreign_language" or pay == "informatics" or pay == "history" or pay == "literature" or pay == "social_science" or pay == "physics" or pay == "chemistry":
