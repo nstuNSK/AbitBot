@@ -88,11 +88,12 @@ def data_processing(id, pay, msg):
     elif pay=="subscribe":
         if user.subscribe == False:
             user.subscribe = True
+            user.save()
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
         else:
             user.subscribe = False
+            user.save()
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
-        user.save()
 
     elif pay=="direction_selection":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("DIRECTION_SELECTION")), "keyboard":key['direction_selection']})
