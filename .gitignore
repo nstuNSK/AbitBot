@@ -7,4 +7,5 @@ __pycache__/
 venv/
 .vscode/
 static/
-sqlite3
+db.sqlite3
+
