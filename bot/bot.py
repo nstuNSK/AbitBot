@@ -38,16 +38,21 @@ def search_direction(user, type):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message":random.choice(from_pay_to_msg("SEARCH_DIRECTION_START"))})
         response = ""
         for item in dir:
-            if item.profile_name == None:
-                response = response + "Направление: " + '"' + item.name + '"' + " на факультете " + item.faculty + "\n" +"Ссылка на направление: " + item.url+"\n\n"
-            else:
-                response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
-            if(len(response)>3500):
+            try:
+                if item.profile_name == None:
+                    response = response + "Направление: " + '"' + item.name + '"' + " на факультете " + item.faculty + "\n" +"Ссылка на направление: " + item.url+"\n\n"
+                else:
+                    response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
+                if len(response)>3500:
+                    user.random_id = user.random_id + 1
+                    user.save()
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
+                    response = ""
+            except Exception as e:
                 user.random_id = user.random_id + 1
                 user.save()
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-                response = ""
-        if(response!=""):
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": e})
+        if response!="":
             user.random_id = user.random_id + 1
             user.save()
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
