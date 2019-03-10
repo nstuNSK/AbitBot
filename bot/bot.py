@@ -131,6 +131,11 @@ def data_processing(id, pay, msg):
                 length = length + 1
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
                 if(length>=2):
+                    user.random_id = user.random_id + 1
+                    user.save()
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "tutu", "keyboard":key['subjects']})
+                    user.random_id = user.random_id + 1
+                    user.save()
                     search_direction(user = user, type = "SUBJECTS")
         else:
             add_sub(user = user, sub = pay)
