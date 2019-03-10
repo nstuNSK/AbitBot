@@ -134,7 +134,7 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("NAME_DIR")), "keyboard":key['subjects']})
 
     elif pay == "математика" or pay == "биология" or pay == "география" or pay == "иностранный язык" or pay == "информатика" or pay == "история" or pay == "литература" or pay == "обществознание" or pay == "физика" or pay == "химия":
-        pay[0] = pay[0].upper()
+        pay = pay.title()
         sub = user.subjects.all()
         length = len(sub)
         if length !=0:
