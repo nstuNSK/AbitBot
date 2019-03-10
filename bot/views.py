@@ -17,9 +17,9 @@ def index(request):
                 elif data["type"] == "message_new":
                     obj = data["object"]
                     if "payload" in obj:
-                        pay = obj["payload"]
+                        pay = obj["payload"][1:-1]
                         try:
-                            pay = bytes(obj["payload"], 'cp1251').decode('utf-8')[1:-1]
+                            pay = bytes(obj["payload"], 'cp1251').decode('utf-8')
                         except:
                             pass
                         bot.data_processing(id = obj["from_id"], pay = pay, msg = obj["text"])
