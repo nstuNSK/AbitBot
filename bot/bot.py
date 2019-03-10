@@ -86,18 +86,14 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard":get_main_keyboard(user = user)})
 
     elif pay=="subscribe":
-        try:
-            if user.subscribe == False:
-                user.subscribe = True
-                user.save()
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
-            else:
-                user.subscribe = False
-                user.save()
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
-        except:
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "мне плохо"})
-
+        if user.subscribe == False:
+            user.subscribe = True
+            user.save()
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
+        else:
+            user.subscribe = False
+            user.save()
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
     elif pay=="direction_selection":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("DIRECTION_SELECTION")), "keyboard":key['direction_selection']})
 
@@ -131,6 +127,7 @@ def data_processing(id, pay, msg):
             if len(sub)<2:
                 add_sub(user = user, sub = pay)
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
+                sub = user.subjects.all()
                 if(len(sub)+1>=2):
                     search_direction(user = user, type = "SUBJECTS")
         else:
@@ -155,7 +152,7 @@ def data_processing(id, pay, msg):
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
     else:
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": pay, "keyboard": get_main_keyboard(user = user)}) #random.choice(from_pay_to_msg("ERROR"))
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ERROR")), "keyboard": get_main_keyboard(user = user)})
     user.random_id = user.random_id + 1
     user.save()
 
