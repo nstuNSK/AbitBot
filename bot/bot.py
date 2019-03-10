@@ -135,9 +135,10 @@ def data_processing(id, pay, msg):
             if length<2:
                 add_sub(user = user, sub = pay)
                 length = length + 1
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
                 if(length>=2):
                     search_direction(user = user, type = "SUBJECTS")
+                else:
+                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
         else:
             add_sub(user = user, sub = pay)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
