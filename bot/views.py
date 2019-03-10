@@ -18,10 +18,10 @@ def index(request):
                     obj = data["object"]
                     if "payload" in obj:
                         pay = obj["payload"][1:-1]
-                        # try:
-                        #     pay = bytes(pay, 'cp1251').decode('utf-8')
-                        # except:
-                        #     pass
+                        try:
+                            pay = bytes(pay, 'cp1251').decode('utf-8')
+                        except:
+                            pass
                         bot.data_processing(id = obj["from_id"], pay = pay, msg = obj["text"])
                     else:
                         bot.data_processing(id = obj["from_id"], pay = " ", msg = obj["text"])
