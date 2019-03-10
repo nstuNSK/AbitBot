@@ -123,12 +123,13 @@ def data_processing(id, pay, msg):
 
     elif pay == "Математика" or pay == "Биология" or pay == "География" or pay == "Иностранный язык" or pay == "Информатика" or pay == "История" or pay == "Литература" or pay == "Обществознание" or pay == "Физика" or pay == "Химия":
         sub = user.subjects.all()
-        if len(sub) !=0:
-            if len(sub)<2:
+        length = len(sub)
+        if length !=0:
+            if length<2:
                 add_sub(user = user, sub = pay)
+                length = length + 1
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
-                sub = user.subjects.all()
-                if(len(sub)+1>=2):
+                if(length>=2):
                     search_direction(user = user, type = "SUBJECTS")
         else:
             add_sub(user = user, sub = pay)
