@@ -77,7 +77,7 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
         user.random_id = user.random_id + 1
         user.save()
-        vk.method("messages.send", {"random_id": user.random_id + 1, "user_id": id, "message": random.choice(from_pay_to_msg("HELP_MSG")), "keyboard": get_main_keyboard(user = user)})
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("HELP_MSG")), "keyboard": get_main_keyboard(user = user)})
 
     elif msg=="admin":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADMIN")), "keyboard":key['start']})
@@ -86,14 +86,17 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard":get_main_keyboard(user = user)})
 
     elif pay=="subscribe":
-        if user.subscribe == False:
-            user.subscribe = True
-            user.save()
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
-        else:
-            user.subscribe = False
-            user.save()
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
+        try:
+            if user.subscribe == False:
+                user.subscribe = True
+                user.save()
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
+            else:
+                user.subscribe = False
+                user.save()
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("UNSUBSCRIBE")), 'keyboard': get_main_keyboard(user = user)})
+        except:
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "мне плохо"})
 
     elif pay=="direction_selection":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("DIRECTION_SELECTION")), "keyboard":key['direction_selection']})
