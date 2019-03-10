@@ -115,7 +115,7 @@ def data_processing(id, pay, msg):
             sphere.account.remove(user)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("SPHERE")), "keyboard":key['sphere']})
 
-    elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Общество" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
+    elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Обществознание" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
         spheres = user.spheres.all()
         if len(spheres) != 0:
             if len(spheres) < 3:
