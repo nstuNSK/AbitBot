@@ -114,15 +114,15 @@ def get_keyboards():
         "one_time": True,
         "buttons":[
             [
-                get_button(label="Математика",color="default",payload="Математика"),
-                get_button(label="Биология",color="default",payload="Биология"),
-                get_button(label="География",color="default",payload="География"),
-                get_button(label="Иностранный язык",color="default",payload="Иностранный язык")
+                get_button(label="Математика",color="default",payload="математика"),
+                get_button(label="Биология",color="default",payload="биология"),
+                get_button(label="География",color="default",payload="география"),
+                get_button(label="Иностранный язык",color="default",payload="иностранный язык")
             ],
             [
                 get_button(label="Информатика",color="default",payload="информатика"),
-                get_button(label="История",color="default",payload="История"),
-                get_button(label="Литература",color="default",payload="Литература")
+                get_button(label="История",color="default",payload="история"),
+                get_button(label="Литература",color="default",payload="литература")
             ],
             [
                 get_button(label="Обществознание",color="default",payload="Обществознание"),
