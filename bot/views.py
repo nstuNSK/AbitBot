@@ -17,6 +17,7 @@ def index(request):
                 elif data["type"] == "message_new":
                     obj = data["object"]
                     if "payload" in obj:
+                        pay = obj["payload"]
                         try:
                             pay = bytes(obj["payload"], 'cp1251').decode('utf-8')[1:-1]
                         except:
