@@ -27,11 +27,11 @@ def search_direction(user, type):
     if type == "SPHERE":
         spheres = user.spheres.all()
         for sphere in spheres:
-            dir.append(sphere.direction.all())
+            dir = dir + sphere.direction.all()
     elif type == "SUBJECTS":
         subjects = user.subjects.all()
         for subject in subjects:
-            dir.append(subject.direction.all())
+            dir = dir + subject.direction.all()
     if len(dir)!=0:
         user.random_id = user.random_id + 1
         user.save()
