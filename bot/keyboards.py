@@ -120,7 +120,7 @@ def get_keyboards():
                 get_button(label="Иностранный язык",color="default",payload="Иностранный язык")
             ],
             [
-                get_button(label="Информатика",color="default",payload="Информатика"),
+                get_button(label="Информатика",color="default",payload="информатика"),
                 get_button(label="История",color="default",payload="История"),
                 get_button(label="Литература",color="default",payload="Литература")
             ],
