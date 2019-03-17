@@ -18,16 +18,20 @@ def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
 def get_question_keyboard(question):
-    return{
-        [
-            get_button(label='Ответ',color="default", payload="A"),
-            get_button(label='Ответ',color="default", payload="A")
-        ],
-        [
-            get_button(label='Ответ',color="default", payload="A"),
-            get_button(label='Ответ',color="default", payload="A")
-        ],
+    keyboard = {
+        "one_time": True,
+        "buttons":[
+            [
+                get_button(label="Ответ",color="default", payload="A"),
+                get_button(label="Ответ",color="default", payload="A")
+            ],
+            [
+                get_button(label="Ответ",color="default", payload="A"),
+                get_button(label="Ответ",color="default", payload="A")
+            ],
+        ]
     }
+    return convertToString(keyboard)
 
 def get_tests_keyboard(l):
     tests = Test.objects.all()
