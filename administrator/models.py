@@ -80,7 +80,7 @@ class Question(models.Model):
     """Вопрос"""
 
     question    = models.TextField(verbose_name="Вопрос")
-    answers     = models.ForeignKey(Answer, on_delete = models.CASCADE, verbose_name = "Ответы", related_name="question")
+    answers     = models.ManyToManyField(Answer, verbose_name = "Ответы", related_name="question", blank = True)
 
     class Meta:
         verbose_name        = "Вопрос"
