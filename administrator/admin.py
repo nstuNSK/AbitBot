@@ -51,6 +51,7 @@ admin.site.register(Subject, SubjectAdmin)
 
 class AnswerAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "answer",
         "reaction",
         "is_true"
@@ -60,6 +61,7 @@ admin.site.register(Answer, AnswerAdmin)
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "question"
     )
 
@@ -67,6 +69,7 @@ admin.site.register(Question, QuestionAdmin)
 
 class TestAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "name",
         "updated_date",
         "start_date"
