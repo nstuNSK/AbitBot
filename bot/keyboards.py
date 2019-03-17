@@ -17,7 +17,7 @@ def get_button(label, color,payload=""):
 def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
-def get_question_keyboard(question = question):
+def get_question_keyboard(question):
     return{
         [
             get_button(label='Ответ',color="default", payload="A"),
