@@ -17,6 +17,18 @@ def get_button(label, color,payload=""):
 def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
+def get_question_keyboard(question = question):
+    return{
+        [
+            get_button(label='Ответ',color="default", payload="A"),
+            get_button(label='Ответ',color="default", payload="A")
+        ],
+        [
+            get_button(label='Ответ',color="default", payload="A"),
+            get_button(label='Ответ',color="default", payload="A")
+        ],
+    }
+
 def get_tests_keyboard(l):
     tests = Test.objects.all()
     res = []
