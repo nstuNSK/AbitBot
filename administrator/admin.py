@@ -60,8 +60,7 @@ admin.site.register(Answer, AnswerAdmin)
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = (
-        "question",
-        "answers"
+        "question"
     )
 
 admin.site.register(Question, QuestionAdmin)
