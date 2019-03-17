@@ -167,6 +167,9 @@ def data_processing(id, pay, msg):
     elif pay == "frequency":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
 
+    elif pay=="tests":
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Выбери тест", "keyboard": keyboards.get_test_keyboard})
+
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
     else:

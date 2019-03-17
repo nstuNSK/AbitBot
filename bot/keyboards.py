@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from administrator.models import Test
 
 import json
 
@@ -13,8 +13,43 @@ def get_button(label, color,payload=""):
         },
         "color": color
     }
+
 def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
+
+def get_tests_keyboard(l):
+    tests = Test.objects.all()
+    res = []
+    for i in range(8):
+        res.append(tests[(l-1)*8+i])
+    keyboard = {
+        "one_time": True,
+        "buttons":[
+            [
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id)),
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id))
+            ],
+            [
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id)),
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id))
+            ],
+            [
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id)),
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id))
+            ],
+            [
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id)),
+                get_button(label=res[0].name,color="default", payload="Q"+str(res[0].questions.all[0].id))
+            ],
+            [],
+        ]
+    }
+    if l > 1:
+        keyboard["buttons"][5].append(get_button(label="Назад",color="default", payload="List"+str(l-1)))
+    keyboard["buttons"][5].append(get_button(label="Главное меню",color="default", payload="main_menu"))
+    if l < len(tests) / 8:
+        keyboard["buttons"][5].append(get_button(label="Вперед",color="default", payload="Q"+str(l+1)))
+    return convertToString(keyboard)
 
 def get_keyboards():
 
@@ -32,7 +67,8 @@ def get_keyboards():
         "buttons":[
             [get_button(label="Подписаться на новости",color="default",payload="subscribe")],
             [get_button(label="Подбор направления",color="default",payload="direction_selection")],
-            [get_button(label="Конкурсные списки",color="default",payload="lists")]
+            [get_button(label="Тесты",color="default",payload="tests")],
+            #[get_button(label="Конкурсные списки",color="default",payload="lists")]
         ]
     }
     keyboard_main_menu_off = convertToString(keyboard_main_menu_off)
