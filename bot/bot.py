@@ -84,14 +84,13 @@ def get_main_keyboard(user):
         return key['main_menu_off']
 
 def get_questions(pay,user):
-    try:
+    #try:
         id = int(pay[1:])
         question = Question.objects.get(id = id)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
-        return True
-    except:
-        return False
-
+        #return True
+    #except:
+    #    return False
 
 def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
