@@ -6,6 +6,7 @@ __pycache__/
 .pyc
 venv/
 .vscode/
+.vs/
 static/
 db.sqlite3
 
