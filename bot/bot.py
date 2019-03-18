@@ -101,11 +101,14 @@ def get_result(pay,user):
         print("Правильный")
     else:
         print("Неправильный")
-    if Question.objects.filter(id = question.id+1).test.all()[0].id == test.id:
+    #try:
+    if Question.objects.get(id = question.id+1).test.all()[0].id == test.id:
         question = Question.objects.get(id = question.id+1)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
     else:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
+    #except:
+
 
 def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
