@@ -92,6 +92,21 @@ def get_questions(pay,user):
     #except:
     #    return False
 
+def get_result(pay,user):
+    id = int(pay[1:])
+    answer = Answer.objects.get(id = id)
+    question = answer.question.all()[0]
+    test = question.test.all()[0]
+    if (answer.is_true):
+        print("Правильный")
+    else:
+        print("Неправильный")
+    if Question.objects.filter(id = question.id+1).test.all()[0].id == test.id:
+        question = Question.objects.get(id = question.id+1)
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
+    else:
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
+
 def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
     if pay=={"command":"start"} or pay == "admin":
@@ -181,6 +196,9 @@ def data_processing(id, pay, msg):
 
     elif pay[0]=="Q":
         get_questions(pay = pay, user = user)
+
+    elif pay[0]=="A":
+        get_result(pay = pay, user = user)
 
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
