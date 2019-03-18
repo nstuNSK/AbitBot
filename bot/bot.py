@@ -88,7 +88,7 @@ def get_questions(pay,user):
     #try:
     question = Question.objects.get(id = id)
     print(question.question)
-    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "asdsa")
+    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "asdsa"})
     #vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         #return True
     #except:
