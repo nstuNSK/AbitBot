@@ -40,6 +40,7 @@ def get_tests_keyboard(l):
     for i in range(8):
         if len(tests) > (l-1)*8+i:
             res.append(tests[(l-1)*8+i])
+            print
         else:
             break
     keyboard = {
@@ -49,13 +50,17 @@ def get_tests_keyboard(l):
     temp = []
     for test in res:
         if len(temp) == 1:
-            temp.appened(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
             keyboard["buttons"].append(temp)
         else:
             temp = []
-            temp.appened(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
-        keyboard["buttons"].append([])
+            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+    if len(temp) == 1:
+            keyboard["buttons"].append(temp)
+    keyboard["buttons"].append([])
     last = len(keyboard["buttons"]) - 1
+    print(keyboard["buttons"])
+    print(last)
     if l > 1:
         keyboard["buttons"][last].append(get_button(label="Назад",color="default", payload="List"+str(l-1)))
     keyboard["buttons"][last].append(get_button(label="Главное меню",color="default", payload="main_menu"))
