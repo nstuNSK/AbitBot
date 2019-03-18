@@ -107,7 +107,7 @@ def get_result(pay,user):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         else:
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
-    except DoesNotExist:
+    except:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
 
 
