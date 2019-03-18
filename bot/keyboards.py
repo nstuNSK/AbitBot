@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from administrator.models import Test
+from administrator.models import Test, Answer, Question
 
 import json
 
@@ -18,6 +18,7 @@ def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
 def get_question_keyboard(question):
+    Answers.question.Answer.all()
     keyboard = {
         "one_time": True,
         "buttons":[
@@ -43,31 +44,23 @@ def get_tests_keyboard(l):
             break
     keyboard = {
         "one_time": True,
-        "buttons":[
-            [
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id)),
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id))
-            ],
-            [
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id)),
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id))
-            ],
-            [
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id)),
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id))
-            ],
-            [
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id)),
-                get_button(label=str(res[0].name),color="default", payload="Q"+str(res[0].questions.all()[0].id))
-            ],
-            [],
-        ]
+        "buttons":[]
     }
+    temp = []
+    for test in res:
+        if len(temp) == 1:
+            temp.appened(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+            keyboard["buttons"].append(temp)
+        else:
+            temp = []
+            temp.appened(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+        keyboard["buttons"].append([])
+    last = len(keyboard["buttons"]) - 1
     if l > 1:
-        keyboard["buttons"][4].append(get_button(label="Назад",color="default", payload="List"+str(l-1)))
-    keyboard["buttons"][4].append(get_button(label="Главное меню",color="default", payload="main_menu"))
+        keyboard["buttons"][last].append(get_button(label="Назад",color="default", payload="List"+str(l-1)))
+    keyboard["buttons"][last].append(get_button(label="Главное меню",color="default", payload="main_menu"))
     if l < len(tests) / 8:
-        keyboard["buttons"][4].append(get_button(label="Вперед",color="default", payload="Q"+str(l+1)))
+        keyboard["buttons"][last].append(get_button(label="Вперед",color="default", payload="Q"+str(l+1)))
     return convertToString(keyboard)
 
 def get_keyboards():
