@@ -87,6 +87,9 @@ def get_questions(pay,user):
     #try:
         id = int(pay[1:])
         question = Question.objects.get(id = id)
+        test = question.test.all()[0]
+        result = ResultOfTest.objects.create(test = test)
+        result.account.add(id = user.id)
         print(keyboards.get_question_keyboard(question = question))
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         #return True
@@ -98,13 +101,14 @@ def get_result(pay,user):
     answer = Answer.objects.get(id = id)
     question = answer.question.all()[0]
     test = question.test.all()[0]
+    result = ResultOfTest.objects.get(test = test)
+    result.allAnswer = result.allAnswer + 1
     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(answer.reaction)})
-    if (answer.is_true):
-        print("Правильный")
-    else:
-        print("Неправильный")
     user.random_id = user.random_id + 1
     user.save()
+    if (answer.is_true):
+        result.rightAnswer = result.rightAnswer + 1
+    result.save()
     try:
         if Question.objects.get(id = question.id+1).test.all()[0].id == test.id:
             question = Question.objects.get(id = question.id+1)
