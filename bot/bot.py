@@ -88,6 +88,7 @@ def get_questions(pay,user):
         flag = True
         id = int(pay[1:])
         question = Question.objects.get(id = id)
+        print(question)
         test = question.test.all()[0]
         results = user.tests.filter(test = test)
         if len(results)==0:
