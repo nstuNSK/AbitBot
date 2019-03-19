@@ -88,7 +88,7 @@ class ResultOfTest(models.Model):
 
     rightAnswer     = models.IntegerField(default = 0, verbose_name = "Количество правильных ответов")
     allAnswer       = models.IntegerField(default = 0, verbose_name = "Количество всех ответов")
-    test            = models.OneToOneField(Test, on_delete = models.CASCADE,verbose_name = "Тест", related_name = "result")
+    test            = models.ForeignKey(Test, on_delete = models.CASCADE,verbose_name = "Тест", related_name = "result")
     class Meta:
         verbose_name        = "Результат теста"
         verbose_name_plural = "Результаты теста"

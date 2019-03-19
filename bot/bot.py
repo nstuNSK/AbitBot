@@ -85,11 +85,14 @@ def get_main_keyboard(user):
 
 def get_questions(pay,user):
     #try:
+        flag = True
         id = int(pay[1:])
         question = Question.objects.get(id = id)
         test = question.test.all()[0]
-        result = ResultOfTest.objects.create(test = test)
-        result.account.add(id = user.id)
+        results = user.tests.filter(test = test)
+        if len(results)==0:
+            result = ResultOfTest.objects.create(test = test)
+            result.account.add(user)
         print(keyboards.get_question_keyboard(question = question))
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         #return True
@@ -114,9 +117,11 @@ def get_result(pay,user):
             question = Question.objects.get(id = question.id+1)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         else:
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
+            string = "Твой результат:" + result.rightAnswer + " правильных ответов из " + result.allAnswer
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": string, "keyboard": get_main_keyboard(user = user)})
     except:
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": "Результаты тестирование", "keyboard": get_main_keyboard(user = user)})
+        string = "Твой результат:" + result.rightAnswer + " правильных ответов из " + result.allAnswer
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": string, "keyboard": get_main_keyboard(user = user)})
 
 
 def data_processing(id, pay, msg):
