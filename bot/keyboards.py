@@ -18,6 +18,7 @@ def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
 def get_question_keyboard(question):
+    print(question)
     answers = question.answers.all()
     print(answers)
     keyboard = {

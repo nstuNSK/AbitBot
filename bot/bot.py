@@ -93,7 +93,6 @@ def get_questions(pay,user):
         if len(results)==0:
             result = ResultOfTest.objects.create(test = test)
             result.account.add(user)
-        print(question)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         #return True
     #except:
