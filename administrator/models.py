@@ -38,21 +38,6 @@ class Direction(models.Model):
         verbose_name        = "Направление"
         verbose_name_plural = "Направления"
 
-class Account(models.Model):
-    """Аккаунт пользователя"""
-
-    id              = models.IntegerField(verbose_name="id", primary_key = True)
-    random_id       = models.IntegerField(verbose_name="идентификатор сообщений", default = 0 )
-    lk_code         = models.IntegerField(verbose_name="Код личного кабинета", default = 0)
-    subscribe       = models.BooleanField(default=False, verbose_name ="Подписка")
-    last_news       = models.CharField(max_length = 100, verbose_name = "Последняя новость", default = "null")
-    spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "account", blank = True)
-    subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "account", blank = True)
-
-    class Meta:
-        verbose_name        = "Пользователь"
-        verbose_name_plural = "Пользователи"
-
 class Msg(models.Model):
     """Сообщение"""
 
@@ -97,3 +82,29 @@ class Test(models.Model):
     class Meta:
         verbose_name        = "Тест"
         verbose_name_plural = "Тесты"
+
+class ResultOfTest(models.Model):
+    """Результат теста"""
+
+    rightAnswer     = models.IntegerField(default = 0, verbose_name = "Количество правильных ответов")
+    allAnswer       = models.IntegerField(default = 0, verbose_name = "Количество всех ответов")
+    test            = models.OneToOneField(Test, on_delete = models.CASCADE,verbose_name = "Тест", related_name = "result")
+    class Meta:
+        verbose_name        = "Результат теста"
+        verbose_name_plural = "Результаты теста"
+
+class Account(models.Model):
+    """Аккаунт пользователя"""
+
+    id              = models.IntegerField(verbose_name="id", primary_key = True)
+    random_id       = models.IntegerField(verbose_name="идентификатор сообщений", default = 0 )
+    lk_code         = models.IntegerField(verbose_name="Код личного кабинета", default = 0)
+    subscribe       = models.BooleanField(default=False, verbose_name ="Подписка")
+    last_news       = models.CharField(max_length = 100, verbose_name = "Последняя новость", default = "null")
+    spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "account", blank = True)
+    subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "account", blank = True)
+    tests           = models.ManyToManyField(ResultOfTest, verbose_name = "Результаты пройденных тестов", related_name = "account")
+
+    class Meta:
+        verbose_name        = "Пользователь"
+        verbose_name_plural = "Пользователи"
