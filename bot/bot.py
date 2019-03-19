@@ -103,7 +103,7 @@ def get_result(pay,user):
     answer = Answer.objects.get(id = id)
     question = answer.question.all()[0]
     test = question.test.all()[0]
-    result = ResultOfTest.objects.get(test = test)
+    result = user.tests.get(test = test)
     result.allAnswer = result.allAnswer + 1
     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(answer.reaction)})
     user.random_id = user.random_id + 1
