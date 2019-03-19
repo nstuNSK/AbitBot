@@ -55,6 +55,8 @@ class Answer(models.Model):
     reaction    = models.TextField(verbose_name="Реакция на ответ")
     is_true     = models.BooleanField(verbose_name="Верный ответ")
 
+    def __str__(self):
+        return "{} {} {}".format(self.id, self.answer, self.is_true)
     class Meta:
         verbose_name        = "Ответ"
         verbose_name_plural = "Ответы"
@@ -67,6 +69,8 @@ class Question(models.Model):
     question    = models.TextField(verbose_name="Вопрос")
     answers     = models.ManyToManyField(Answer, verbose_name = "Ответы", related_name="question", blank = True)
 
+    def __str__(self):
+        return "{} {}".format(self.id, self.question)
     class Meta:
         verbose_name        = "Вопрос"
         verbose_name_plural = "Вопросы"
