@@ -87,6 +87,7 @@ def get_questions(pay,user):
     #try:
         id = int(pay[1:])
         question = Question.objects.get(id = id)
+        print(keyboards.get_question_keyboard(question = question))
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         #return True
     #except:
