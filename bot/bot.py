@@ -116,10 +116,10 @@ def get_result(pay,user):
             question = Question.objects.get(id = question.id+1)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         else:
-            string = "Твой результат:" + result.rightAnswer + " правильных ответов из " + result.allAnswer
+            string = "Твой результат:" + str(result.rightAnswer) + " правильных ответов из " + str(result.allAnswer)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": string, "keyboard": get_main_keyboard(user = user)})
     except:
-        string = "Твой результат:" + result.rightAnswer + " правильных ответов из " + result.allAnswer
+        string = "Твой результат:" + str(result.rightAnswer) + " правильных ответов из " + str(result.allAnswer)
         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": string, "keyboard": get_main_keyboard(user = user)})
 
 
