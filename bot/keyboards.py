@@ -25,14 +25,9 @@ def get_question_keyboard(question):
     }
     temp = []
     for answer in answers:
-        if len(temp) == 1:
-            temp.append(get_button(label=answer.answer,color="default", payload="A" + str(answer.id)))
-            keyboard["buttons"].append(temp)
-        else:
-            temp = []
-            temp.append(get_button(label=answer.answer,color="default", payload="A" + str(answer.id)))
-    if len(temp) == 1:
-            keyboard["buttons"].append(temp)
+        temp = []
+        temp.append(get_button(label=answer.answer,color="default", payload="A" + str(answer.id)))
+        keyboard["buttons"].append(temp)
     return convertToString(keyboard)
 
 def get_tests_keyboard(l):
