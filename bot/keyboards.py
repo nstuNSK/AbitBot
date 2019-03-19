@@ -19,6 +19,7 @@ def convertToString(keyboard):
 
 def get_question_keyboard(question):
     answers = question.answers.all()
+    print(answers)
     keyboard = {
         "one_time": True,
         "buttons":[]
