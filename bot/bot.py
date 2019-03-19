@@ -98,10 +98,13 @@ def get_result(pay,user):
     answer = Answer.objects.get(id = id)
     question = answer.question.all()[0]
     test = question.test.all()[0]
+    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(answer.reaction)})
     if (answer.is_true):
         print("Правильный")
     else:
         print("Неправильный")
+    user.random_id = user.random_id + 1
+    user.save()
     try:
         if Question.objects.get(id = question.id+1).test.all()[0].id == test.id:
             question = Question.objects.get(id = question.id+1)
