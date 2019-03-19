@@ -76,3 +76,12 @@ class TestAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(Test, TestAdmin)
+
+class ResultOfTestAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "rightAnswer",
+        "allAnswer"
+    )
+
+admin.site.register(ResultOfTest, ResultOfTestAdmin)
