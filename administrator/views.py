@@ -6,7 +6,6 @@ from .db import configure, create_msgs
 # Create your views here.
 def index(request):
     if request.method == "POST":
-        print("here")
         configure()
         create_msgs()
         return HttpResponse("eboy")

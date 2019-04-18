@@ -12,7 +12,7 @@ def configure():
     res = json.loads(r.content.decode("utf-8"))
 
     for direction in res:
-        dir = Direction.objects.get_or_create( name = direction["DIRECTION"], 
+        dir = Direction.objects.get_or_create( name = direction["DIRECTION"],
                                         faculty = direction["FACULT"],
                                         keys_plus = direction["KEYS_PLUS"],
                                         ball_k = direction["BALL_K"],
@@ -20,8 +20,7 @@ def configure():
                                         url = direction["URL"],
                                         description = direction["DESCR"],
                                         profile_name = direction["PROFILE_NAME"],
-                                        id = direction["ID"])
-        print(dir[0])
+                                        idNSTU = direction["ID"])
         spheres = direction["data"]
         if spheres[0]["SPHERE"] != None:
             for sphere in spheres:

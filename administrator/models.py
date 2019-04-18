@@ -21,7 +21,7 @@ class Subject(models.Model):
 
 class Direction(models.Model):
     """Направления"""
-    id              = models.IntegerField(primary_key=True)
+    idNSTU          = models.IntegerField(verbose_name = "id НГТУ", null = True)
     name            = models.CharField(max_length = 50, verbose_name = "Название")
     faculty         = models.CharField(max_length = 150, verbose_name = "Факультет")
     keys_plus       = models.CharField(max_length = 15, verbose_name = "Код направления")
