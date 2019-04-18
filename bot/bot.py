@@ -213,7 +213,7 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
 
     elif pay=="tests":
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Выбери тест", "keyboard": keyboards.get_tests_keyboard()})
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Выбери тест", "keyboard": keyboards.get_tests_keyboard(l = 1)})
 
     elif pay[0]=="Q":
         get_questions(pay = pay, user = user)

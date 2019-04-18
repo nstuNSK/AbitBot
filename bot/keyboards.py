@@ -29,7 +29,7 @@ def get_question_keyboard(question):
         keyboard["buttons"].append(temp)
     return convertToString(keyboard)
 
-def get_tests_keyboard():
+def get_tests_keyboard(l):
     tests = Test.objects.filter(active = True)
     res = []
     for i in range(8):
@@ -53,8 +53,6 @@ def get_tests_keyboard():
             keyboard["buttons"].append(temp)
     keyboard["buttons"].append([])
     last = len(keyboard["buttons"]) - 1
-    print(keyboard["buttons"])
-    print(last)
     if l > 1:
         keyboard["buttons"][last].append(get_button(label="Назад",color="primary", payload="List"+str(l-1)))
     keyboard["buttons"][last].append(get_button(label="Главное меню",color="primary", payload="main_menu"))
