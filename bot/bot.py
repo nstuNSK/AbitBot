@@ -11,7 +11,7 @@ from . import keyboards
 from administrator.models import *
 
 def auth():
-    vk = vk_api.VkApi(token='d00a1318d5f9182d89e56612d1df321e3413ca74c2b6cb6a6fe443cb0782adbcbf089960703bfda62658b')
+    vk = vk_api.VkApi(token='f77e482fc0da16105d5dc35579dc14009893764743111e79864369756790fe6f0f688f6a01bb41ac2039c')
     vk._auth_token()
     return vk
 
