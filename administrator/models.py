@@ -51,12 +51,12 @@ class Msg(models.Model):
 class Answer(models.Model):
     """Ответ"""
 
-    answer      = models.TextField(verbose_name="Ответ")
+    answer      = models.CharField(max_length = 40 ,verbose_name="Ответ")
     reaction    = models.TextField(verbose_name="Реакция на ответ")
     is_true     = models.BooleanField(verbose_name="Верный ответ")
 
     def __str__(self):
-        return "{} {} {}".format(self.id, self.answer, self.is_true)
+        return "{} ({})".format(self.answer, self.is_true)
     class Meta:
         verbose_name        = "Ответ"
         verbose_name_plural = "Ответы"
@@ -66,11 +66,12 @@ class Answer(models.Model):
 class Question(models.Model):
     """Вопрос"""
 
+    number      = models.IntegerField(verbose_name = "Номер вопроса", null = True)
     question    = models.TextField(verbose_name="Вопрос")
     answers     = models.ManyToManyField(Answer, verbose_name = "Ответы", related_name="question", blank = True)
 
     def __str__(self):
-        return "{} {}".format(self.id, self.question)
+        return "{} {}".format(self.number, self.question)
     class Meta:
         verbose_name        = "Вопрос"
         verbose_name_plural = "Вопросы"
@@ -82,6 +83,7 @@ class Test(models.Model):
     updated_date    = models.DateTimeField(verbose_name = "Дата и время изменения", auto_now = True)
     start_date      = models.DateField(verbose_name="Дата начала теста")
     questions       = models.ManyToManyField(Question, verbose_name = "Вопросы", related_name="test", blank = True)
+    active          = models.BooleanField(verbose_name = "Активный")
 
     class Meta:
         verbose_name        = "Тест"
