@@ -117,7 +117,7 @@ def get_result(pay,user):
         result.rightAnswer = result.rightAnswer + 1
     result.save()
     try:
-        if Question.objects.get(id = question.id+1).test.all()[0].id == test.id:
+        if len(test.questions.filter(number = question.number+1)) != 0:
             question = Question.objects.get(id = question.id+1)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id, "message": str(question.question), "keyboard": keyboards.get_question_keyboard(question = question)})
         else:

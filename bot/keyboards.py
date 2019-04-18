@@ -18,14 +18,11 @@ def convertToString(keyboard):
     return json.dumps(keyboard, ensure_ascii = False)
 
 def get_question_keyboard(question):
-    print(question)
     answers = question.answers.all()
-    print(answers)
     keyboard = {
         "one_time": True,
         "buttons":[]
     }
-    temp = []
     for answer in answers:
         temp = []
         temp.append(get_button(label=answer.answer,color="default", payload="A" + str(answer.id)))
@@ -33,12 +30,11 @@ def get_question_keyboard(question):
     return convertToString(keyboard)
 
 def get_tests_keyboard():
-    tests = Test.objects.all()
+    tests = Test.objects.filter(active = True)
     res = []
     for i in range(8):
         if len(tests) > (l-1)*8+i:
             res.append(tests[(l-1)*8+i])
-            print
         else:
             break
     keyboard = {
@@ -48,11 +44,11 @@ def get_tests_keyboard():
     temp = []
     for test in res:
         if len(temp) == 1:
-            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.filter(number = 1)[0].id)))
             keyboard["buttons"].append(temp)
         else:
             temp = []
-            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.all()[0].id)))
+            temp.append(get_button(label=str(test.name),color="default", payload="Q"+str(test.questions.filter(number = 1)[0].id)))
     if len(temp) == 1:
             keyboard["buttons"].append(temp)
     keyboard["buttons"].append([])
