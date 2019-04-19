@@ -130,7 +130,7 @@ def get_result(pay,user):
 
 def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
-    if pay=={"command":"start"} or pay == "admin":
+    if pay=='"command":"start"' or pay == "admin":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
         user.random_id = user.random_id + 1
         user.save()
