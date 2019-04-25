@@ -23,15 +23,16 @@ def from_pay_to_msg(pay):
     return res
 
 def search_direction(user, type):
-    dir = []
     if type == "SPHERE":
-        spheres = user.spheres.all()
-        for sphere in spheres:
-            dir.extend(sphere.direction.all())
+        mas = user.spheres.all()
     elif type == "SUBJECTS":
-        subjects = user.subjects.all()
-        for subject in subjects:
-            dir.extend(subject.direction.all())
+        mas = user.subjects.all()
+    dir = []
+    for item in mas:
+        directions = item.direction.all()
+        for direction in directions:
+            if direction not in dir:
+                dir.append(direction)
     if len(dir)!=0:
         user.random_id = user.random_id + 1
         user.save()
