@@ -27,7 +27,6 @@ def search_direction(user, type):
     if type == "SPHERE":
         mas = user.spheres.all()
         directions = mas[0].direction.all()
-        mas.pop(0)
         for direction in directions:
             flag = True
             for item in mas:
@@ -38,7 +37,6 @@ def search_direction(user, type):
     elif type == "SUBJECTS":
         mas = user.subjects.all()
         directions = mas[0].direction.all()
-        mas.pop(0)
         for direction in directions:
             flag = True
             for item in mas:
