@@ -26,14 +26,11 @@ def search_direction(user, type):
     dir = []
     if type == "SPHERE":
         mas = user.spheres.all()
-        directions = mas[0].direction.all()
-        for direction in directions:
-            flag = True
-            for item in mas:
-                if item not in direction.spheres.all():
-                    flag = False
-            if flag:
-                dir.append(direction)
+        for item in mas:
+            directions = item.direction.all()
+            for direction in directions:
+                if direction not in dir:
+                    dir.append(direction)
     elif type == "SUBJECTS":
         mas = user.subjects.all()
         directions = mas[0].direction.all()
