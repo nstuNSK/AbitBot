@@ -174,10 +174,12 @@ def data_processing(id, pay, msg):
 
     elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Общество" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
         spheres = user.spheres.all()
-        if len(spheres) != 0:
-            if len(spheres) < 2:
+        length = len(spheres)
+        if  length!= 0:
+            if length < 2:
                 add_sphere(user = user, pay = pay)
-                if len(spheres)>=1:
+                length = length + 1
+                if length>=2:
                     search_direction(user = user, type = "SPHERE")
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['sphere']})
