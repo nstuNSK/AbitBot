@@ -24,10 +24,10 @@ def from_pay_to_msg(pay):
 
 def search_direction(user, type):
     dir = []
-    directions = mas[0].direction.all()
-    mas.pop(0)
     if type == "SPHERE":
         mas = user.spheres.all()
+        directions = mas[0].direction.all()
+        mas.pop(0)
         for direction in directions:
             flag = True
             for item in mas:
@@ -37,6 +37,8 @@ def search_direction(user, type):
                 dir.append(direction)
     elif type == "SUBJECTS":
         mas = user.subjects.all()
+        directions = mas[0].direction.all()
+        mas.pop(0)
         for direction in directions:
             flag = True
             for item in mas:
