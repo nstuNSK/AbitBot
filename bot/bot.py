@@ -23,15 +23,26 @@ def from_pay_to_msg(pay):
     return res
 
 def search_direction(user, type):
+    dir = []
+    directions = mas[0].direction.all()
+    mas.pop(0)
     if type == "SPHERE":
         mas = user.spheres.all()
+        for direction in directions:
+            flag = True
+            for item in mas:
+                if item not in direction.spheres.all():
+                    flag = False
+            if flag:
+                dir.append(direction)
     elif type == "SUBJECTS":
         mas = user.subjects.all()
-    dir = []
-    for item in mas:
-        directions = item.direction.all()
         for direction in directions:
-            if direction not in dir:
+            flag = True
+            for item in mas:
+                if item not in direction.subjects.all():
+                    flag = False
+            if flag:
                 dir.append(direction)
     if len(dir)!=0:
         user.random_id = user.random_id + 1
@@ -164,9 +175,9 @@ def data_processing(id, pay, msg):
     elif pay=="Машиностроение" or pay=="Безопасность" or pay=="Энергетика" or pay=="IT-технологии" or pay=="Электроника" or pay=="Авиация" or pay=="Общество" or pay=="Экономика" or pay=="Химия" or pay=="Языки" or pay=="Физика":
         spheres = user.spheres.all()
         if len(spheres) != 0:
-            if len(spheres) < 3:
+            if len(spheres) < 2:
                 add_sphere(user = user, pay = pay)
-                if len(spheres)+1>=3:
+                if len(spheres)>=1:
                     search_direction(user = user, type = "SPHERE")
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['sphere']})
@@ -190,7 +201,7 @@ def data_processing(id, pay, msg):
             if length<2:
                 add_sub(user = user, sub = pay)
                 length = length + 1
-                if(length>=2):
+                if length>=2:
                     search_direction(user = user, type = "SUBJECTS")
                 else:
                      vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
