@@ -75,12 +75,12 @@ def search_direction(user, type):
             if len(user.spheres.all()) == 0:
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_ERROR")), 'keyboard': key['sphere']})
             else:
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': key['sphere']})
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': get_main_keyboard(user = user)})
         elif type == "SUBJECTS":
             if len(user.subjects.all()) == 0:
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_ERROR")), 'keyboard': key['subjects']})
             else:
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': key['subjects']})
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': get_main_keyboard(user = user)})
 
 def add_sub(user, sub):
     subject = Subject.objects.get(name = sub)
