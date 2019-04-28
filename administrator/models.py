@@ -37,10 +37,10 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя"""
 
-    firstName       = models.CharField(max_length = 50, verbose_name = "Имя")
-    lastName        = models.CharField(max_length = 50, verbose_name = "Фамилия")
+    firstName       = models.CharField(max_length = 50, verbose_name = "Имя", default = "name")
+    lastName        = models.CharField(max_length = 50, verbose_name = "Фамилия", default = "surname")
     login           = models.CharField(max_length = 50, verbose_name = "Логин", unique = True)
-    password        = models.TextField(verbose_name = "Пароль")
+    password        = models.TextField(verbose_name = "Пароль", default = "pass")
 
     is_active       = models.BooleanField(default=True, verbose_name="Аккаунт действует")
     is_staff        = models.BooleanField(default=False, verbose_name="Сотрудник")
@@ -49,7 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects         = UserManager()
 
     USERNAME_FIELD = 'login'
-    REQUIRED_FIELDS = ['password']
+    REQUIRED_FIELDS = ['password', "firstName", "lastName"]
 
     def save(self, *args, **kwargs):
         super(User, self).save(*args, **kwargs)
@@ -61,6 +61,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "Администратор"
         verbose_name_plural = "Администраторы"
+
+# class User(models.Model):
+#      """Модель пользователя"""
+#      login           = models.CharField(max_length = 50, verbose_name = "Логин", unique = True)
 
 class Sphere(models.Model):
     """Сфера"""

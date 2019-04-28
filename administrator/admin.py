@@ -90,7 +90,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'login',
-        'password',
+        # 'password',
     )
 
 admin.site.register(User, UserAdmin)
