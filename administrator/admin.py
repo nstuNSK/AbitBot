@@ -85,3 +85,15 @@ class ResultOfTestAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(ResultOfTest, ResultOfTestAdmin)
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'firstName',
+        'lastName', 
+        'phoneNumber',
+        'email',
+        'role',
+    )
+
+admin.site.register(User, UserAdmin)
