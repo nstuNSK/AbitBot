@@ -156,7 +156,7 @@ JWT_AUTH = {
  
 }
 
-AUTH_USER_MODEL = "administrator.User"
+AUTH_USER_MODEL = "administrator.user"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/Main/AbitBot/static'
