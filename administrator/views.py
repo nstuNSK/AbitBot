@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
-from .db import configure, create_msgs
+from .db import configure, create_msgs, create_test
 import json
 
 # Create your views here.
@@ -9,6 +9,7 @@ def index(request):
     if request.method == "POST":
         configure()
         create_msgs()
+        create_test()
         return HttpResponse("ok")
     else:
         return HttpResponse("no ok")
