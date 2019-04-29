@@ -86,11 +86,11 @@ class ResultOfTestAdmin(admin.ModelAdmin):
 
 admin.site.register(ResultOfTest, ResultOfTestAdmin)
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'login',
-        # 'password',
-    )
+# class UserAdmin(admin.ModelAdmin):
+#     list_display = (
+#         'id',
+#         'login',
+#         # 'password',
+#     )
 
-admin.site.register(User, UserAdmin)
+# admin.site.register(User, UserAdmin)
