@@ -8,31 +8,31 @@ from django.contrib.auth.models import (
 
 class UserManager(BaseUserManager):
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, login, password, **extra_fields):
         """
-        Creates and saves a User with the given email,and password.
+        Creates and saves a User with the given login,and password.
         """
-        if not email:
-            raise ValueError('The given email must be set')
+        if not login:
+            raise ValueError('The given login must be set')
         try:
             with transaction.atomic():
-                user = self.model(login=email, **extra_fields)
+                user = self.model(login=login, **extra_fields)
                 user.set_password(password)
                 user.save(using=self._db)
                 return user
         except:
             raise
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, login, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(login, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, login, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
-        return self._create_user(email, password=password, **extra_fields)
+        return self._create_user(login, password=password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     """Модель пользователя"""
