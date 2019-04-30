@@ -126,9 +126,9 @@ def create_test():
     ]
     i=1
     for item in questions:
-        question = Question.objects.create(question = item["question"], number = i)
-        test.questions.add(question)
+        q = Question.objects.create(question = item["question"], number = i)
+        test.questions.add(q)
         for an in item["answers"]:
             answer = Answer.objects.create(answer = an["name"], is_true =an["right"], reaction = an["react"] )
-            question.answers.add(answer)
+            q.answers.add(answer)
         i = i + 1
