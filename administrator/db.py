@@ -2,6 +2,7 @@ from .models import *
 
 import requests
 import json
+import datetime
 
 #?json_indent=1&decode_unicode_escape=1
 def configure():
@@ -64,7 +65,7 @@ def create_msgs():
         Msg.objects.get_or_create(pay = item[0], msg = item[1])
 
 def create_test():
-    test = Test.objects.create(name="Об НГТУ")
+    test = Test.objects.create(name="Об НГТУ", start_date = datetime.datetime.now().date(), active = True)
     questions=[
         {
             "question":"Сколько лет Новосибирскому государственному техническому университету?",
