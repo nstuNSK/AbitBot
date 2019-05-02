@@ -9,4 +9,3 @@ venv/
 .vs/
 static/
 db.sqlite3
-
