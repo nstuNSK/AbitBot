@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import *
 
 class UserSerializer(serializers.ModelSerializer):
     """Сериализация пользователя"""
@@ -18,3 +18,19 @@ class UserSerializer(serializers.ModelSerializer):
         )
         extra_kwargs = {'password': {'write_only': True}}
         depth = 5
+
+#class TestSerializer(serializers.ModelSerializer):
+
+class NewsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = News
+        fields = (
+            "id",
+            "name",
+            "description",
+            "active"
+        )
+
+    def create(self,validate_data):
+        return News.objects.create(**validate_data)

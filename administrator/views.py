@@ -10,7 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 from AbitBot import settings
-from .serializers import UserSerializer
+from .serializers import UserSerializer, NewsSerializer
 from .models import *
 from .db import configure, create_msgs, create_test
 
@@ -56,61 +56,53 @@ class TestView(APIView):
         user = UserSerializer(request.user)
         return Response(data = user.data, status = status.HTTP_200_OK)
 
-            
-            
+class NewsList(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
 
+    def get(self,request):
+        news = News.objects.all()
+        res = []
+        for item in news:
+            res.append(NewsSerializer(item).data)
+        return Response(data = res, status = status.HTTP_200_OK)
 
+class NewsView(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
 
+    def get(self,request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            news = News.objects.get(id=id)
+            res = NewsSerializer(news).data
+            return Response(data = res, status = status.HTTP_200_OK)
 
-# '''Аунтификация'''
-# def login(request):
-#     if request.method == "POST":
-#         data = json.loads(request.body.decode("utf-8"))
-#         if "login" in data and "password" in data:
-#             if data["login"] = "admin" and data["password"] = "pasbot2018":
-#                 return HttpResponse("ok")
-#             else:
-#                 return HttpResponse("no ok")
-#         else:
-#             return HttpResponse("no ok")
-#     else:
-#         return HttpResponse("no ok")
+    def put(self,request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            data = request.data
+            news = News.objects.get(id=id)
+            res = NewsSerializer(news, data)
+            res.is_valid()
+            res.save()
+            return Response(data = res.data, status = status.HTTP_200_OK)
 
+    def delete(self,request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            news = News.objects.get(id=id)
+            news.delete()
+            return Response(status = status.HTTP_204_NO_CONTENT)
 
-# '''Новости'''
-# def newsList(request):
-#     if request.method == "GET":
-#         pass
+class NewsPublic(APIView):
+    permission_classes = (IsAuthenticated,)
 
-# def newsDelete(request):
-#     pass
-
-# def newsUpdate(request):
-#     pass
-
-# def newsSend(request):
-#     pass
-
-# def newsAdd(request):
-#     pass
-
-# '''Тестирование'''
-# def testsList(request):
-#     pass
-
-# def testDelete(request):
-#     pass
-
-# def testUpdate(request):
-#     pass
-
-# def testSend(request):
-#     pass
-
-# def testAdd(request):
-#     pass
-
-
-# '''Статистика'''
-# def stat(request):
-#     pass
+    def get(self, request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            news = News.objects.get(id=id)
+            news.active = True
+            news.save()
+            # в after response сделать рассылку новости
+            return Response(status = status.HTTP_204_NO_CONTENT)
