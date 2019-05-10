@@ -85,36 +85,33 @@ class NewsView(APIView):
 
     def post(self,request):
         data = request.data
-        if "id" in data:
-            try:
-                res = NewsSerializer(data)
-                res.is_valid()
-                res.save()
-                return Response(data = res.data, status = status.HTTP_200_OK)
-            else:
-                return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+        # try:
+        res = NewsSerializer(data = data)
+        res.is_valid()
+        res.save()
+        return Response(data = res.data, status = status.HTTP_200_OK)
+        # except:
+        #     return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
     def put(self,request):
         data = request.data
-        if "id" in data:
+        if "id" in request.GET:
             try:
-                news = News.objects.get(id=data["id"])
+                news = News.objects.get(id=request.GET["id"])
                 res = NewsSerializer(news, data)
                 res.is_valid()
                 res.save()
                 return Response(data = res.data, status = status.HTTP_200_OK)
-            else:
+            except:
                 return Response(data = {"error": "Новость не найдена"}, status = status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
     def delete(self,request):
         data = request.data
-        if "id" in data:
-            id = data["id"]
+        if "id" in request.GET:
+            id = request.GET["id"]
             news = News.objects.get(id=id)
             news.delete()
             return Response(status = status.HTTP_204_NO_CONTENT)
@@ -128,7 +125,7 @@ class NewsPublic(APIView):
         if "id" in request.GET:
             id = request.GET["id"]
             news = News.objects.get(id=id)
-            news.active = True
+            news.active = not news.active
             news.save()
             # в after response сделать рассылку новости
             return Response(status = status.HTTP_204_NO_CONTENT)
@@ -161,17 +158,13 @@ class TestView(APIView):
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
     def post(self,request):
-        data = request.data
-        if "id" in data:
-            try:
-                res = TestSerializer(data)
-                res.is_valid()
-                res.save()
-                return Response(data = res.data, status = status.HTTP_200_OK)
-            else:
-                return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+        try:
+            res = TestSerializer(data)
+            res.is_valid()
+            res.save()
+            return Response(data = res.data, status = status.HTTP_200_OK)
+        except:
+            return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
     def put(self,request):
@@ -183,7 +176,7 @@ class TestView(APIView):
                 res.is_valid()
                 res.save()
                 return Response(data = res.data, status = status.HTTP_200_OK)
-            else:
+            except:
                 return Response(data = {"error": "Тест не найден"}, status = status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
