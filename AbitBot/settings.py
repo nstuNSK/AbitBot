@@ -160,3 +160,4 @@ AUTH_USER_MODEL = "administrator.User"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/Main/AbitBot/static'
+MEDIA_ROOT = '/home/Main/AbitBot/media'

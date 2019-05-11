@@ -10,6 +10,8 @@ from . import keyboards
 #import api_nstu_news as api
 from administrator.models import *
 
+SERVICE_KEY = "c1a71290c1a71290c1a71290b7c1cfa9fecc1a7c1a712909dcf1906a5e4cdbd9fbe3703"
+
 def auth():
     vk = vk_api.VkApi(token='f77e482fc0da16105d5dc35579dc14009893764743111e79864369756790fe6f0f688f6a01bb41ac2039c')
     vk._auth_token()
