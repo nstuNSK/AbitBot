@@ -165,6 +165,17 @@ class ResultOfTest(models.Model):
         verbose_name        = "Результат теста"
         verbose_name_plural = "Результаты теста"
 
+class News(models.Model):
+    """Новости"""
+
+    name            = models.CharField(max_length = 50, verbose_name = "Название")
+    description     = models.TextField(verbose_name = "Описание")
+    active          = models.BooleanField(verbose_name = "Активный", default = False)
+
+    class Meta:
+        verbose_name        = "Новость"
+        verbose_name_plural = "Новости"
+
 class Account(models.Model):
     """Аккаунт пользователя"""
 

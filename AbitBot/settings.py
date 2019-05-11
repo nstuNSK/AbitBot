@@ -156,7 +156,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = default_headers + (
     "HTTP_ID",
     "ID",
-    "id"
+    "id",
+    "JWT",
+    "jwt",
+    "Authorization"
 )
 
 JWT_AUTH = {
@@ -171,3 +174,4 @@ AUTH_USER_MODEL = "administrator.User"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/Main/AbitBot/static'
+MEDIA_ROOT = '/home/Main/AbitBot/media'
