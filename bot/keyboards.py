@@ -171,9 +171,9 @@ def get_keyboards():
                 get_button(label="Литература",color="default",payload="литература")
             ],
             [
-                get_button(label="Обществознание",color="default",payload="Обществознание"),
-                get_button(label="Физика",color="default",payload="Физика"),
-                get_button(label="Химия",color="default",payload="Химия")
+                get_button(label="Обществознание",color="default",payload="обществознание"),
+                get_button(label="Физика",color="default",payload="физика"),
+                get_button(label="Химия",color="default",payload="химия")
             ],
             [
                 get_button(label="Главное меню",color="primary",payload="main_menu"),
