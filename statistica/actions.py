@@ -18,7 +18,7 @@ def upgrade_csv():
         data = Account.objects.all()
         users = []
         for user in data:
-            users.append(user.id)
+            users.append(str(user.id))
         users = ",".join(users)
         
         # res = {"cities": [], "schools": [], "sex": {"male": 0, "female": 0}, "bdate": []}
