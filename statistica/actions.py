@@ -74,8 +74,8 @@ def upgrade_csv():
                     if len(i["schools"]) == 0:
                         i["schools"] = None
                     else:
-                        l = len(i["schools"])
-                        i["schools"] = i["schools"][l-1]["name"]
+                        # l = len(i["schools"])
+                        i["schools"] = i["schools"][0]["name"]
 
             
         # keys = []
