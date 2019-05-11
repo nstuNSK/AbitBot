@@ -10,7 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 from AbitBot import settings
-from .serializers import UserSerializer
+from .serializers import UserSerializer, NewsSerializer
 from .models import *
 from .db import configure, create_msgs, create_test
 
@@ -56,61 +56,149 @@ class TestView(APIView):
         user = UserSerializer(request.user)
         return Response(data = user.data, status = status.HTTP_200_OK)
 
-            
-            
+class NewsList(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
+
+    def get(self,request):
+        news = News.objects.all()
+        res = []
+        for item in news:
+            res.append(NewsSerializer(item).data)
+        return Response(data = res, status = status.HTTP_200_OK)
+
+class NewsView(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
+
+    def get(self,request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            try:
+                news = News.objects.get(id=id)
+                res = NewsSerializer(news).data
+                return Response(data = res, status = status.HTTP_200_OK)
+            except:
+                return Response(data = {"error": "Новость не найдена"}, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+
+    def post(self,request):
+        data = request.data
+        # try:
+        res = NewsSerializer(data = data)
+        res.is_valid()
+        res.save()
+        return Response(data = res.data, status = status.HTTP_200_OK)
+        # except:
+        #     return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
+    def put(self,request):
+        data = request.data
+        if "id" in request.GET:
+            try:
+                news = News.objects.get(id=request.GET["id"])
+                res = NewsSerializer(news, data)
+                res.is_valid()
+                res.save()
+                return Response(data = res.data, status = status.HTTP_200_OK)
+            except:
+                return Response(data = {"error": "Новость не найдена"}, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+
+    def delete(self,request):
+        data = request.data
+        if "id" in request.GET:
+            id = request.GET["id"]
+            news = News.objects.get(id=id)
+            news.delete()
+            return Response(status = status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+
+class NewsPublic(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            news = News.objects.get(id=id)
+            news.active = not news.active
+            news.save()
+            # в after response сделать рассылку новости
+            return Response(status = status.HTTP_204_NO_CONTENT)
+
+class TestList(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
+
+    def get(self,request):
+        Tests = Test.objects.all()
+        res = []
+        for item in Tests:
+            res.append(TestSerializer(item).data)
+        return Response(data = res, status = status.HTTP_200_OK)
+
+class TestView(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
+
+    def get(self,request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            try:
+                test = Test.objects.get(id=id)
+                res = TestSerializer(test).data
+                return Response(data = res, status = status.HTTP_200_OK)
+            except:
+                return Response(data = {"error": "Тест не найден"}, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
+
+    def post(self,request):
+        try:
+            res = TestSerializer(data)
+            res.is_valid()
+            res.save()
+            return Response(data = res.data, status = status.HTTP_200_OK)
+        except:
+            return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
-# '''Аунтификация'''
-# def login(request):
-#     if request.method == "POST":
-#         data = json.loads(request.body.decode("utf-8"))
-#         if "login" in data and "password" in data:
-#             if data["login"] = "admin" and data["password"] = "pasbot2018":
-#                 return HttpResponse("ok")
-#             else:
-#                 return HttpResponse("no ok")
-#         else:
-#             return HttpResponse("no ok")
-#     else:
-#         return HttpResponse("no ok")
+    def put(self,request):
+        data = request.data
+        if "id" in data:
+            try:
+                test = Test.objects.get(id=data["id"])
+                res = TestSerializer(test, data)
+                res.is_valid()
+                res.save()
+                return Response(data = res.data, status = status.HTTP_200_OK)
+            except:
+                return Response(data = {"error": "Тест не найден"}, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
 
-# '''Новости'''
-# def newsList(request):
-#     if request.method == "GET":
-#         pass
+    def delete(self,request):
+        data = request.data
+        if "id" in data:
+            id = data["id"]
+            test = Tests.objects.get(id=id)
+            test.delete()
+            return Response(status = status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
-# def newsDelete(request):
-#     pass
+class TestPublic(APIView):
+    permission_classes = (IsAuthenticated,)
 
-# def newsUpdate(request):
-#     pass
-
-# def newsSend(request):
-#     pass
-
-# def newsAdd(request):
-#     pass
-
-# '''Тестирование'''
-# def testsList(request):
-#     pass
-
-# def testDelete(request):
-#     pass
-
-# def testUpdate(request):
-#     pass
-
-# def testSend(request):
-#     pass
-
-# def testAdd(request):
-#     pass
-
-
-# '''Статистика'''
-# def stat(request):
-#     pass
+    def get(self, request):
+        if "id" in request.GET:
+            id = request.GET["id"]
+            test = Test.objects.get(id=id)
+            test.active = True
+            test.save()
+            return Response(status = status.HTTP_204_NO_CONTENT)
