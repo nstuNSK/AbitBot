@@ -23,16 +23,16 @@ class StatisticaView(APIView):
     parser_classes = (JSONParser,)
 
     def get(self, request):
-        # try:
+        try:
             if request.query_params["action"]=="csv":
                 upgrade_csv()
             elif request.query_params["action"]=="stat":
                 stat = get_stat_from_csv()
                 return Response(data=stat, status=status.HTTP_200_OK)
 
-        #     return Response(status = status.HTTP_204_NO_CONTENT)
-        # except:
-        #     raise
-        #     return Response(status = status.HTTP_400_BAD_REQUEST)
+            return Response(status = status.HTTP_204_NO_CONTENT)
+        except:
+            raise
+            return Response(status = status.HTTP_400_BAD_REQUEST)
     
 
