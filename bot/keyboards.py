@@ -213,5 +213,5 @@ def get_keyboards():
         'sphere': keyboard_sphere,
         'subjects': keyboard_subjects,
         'frequency':keyboard_frequency,
-        'feedback', keyboard_feedback,
+        'feedback': keyboard_feedback,
     }
