@@ -192,6 +192,17 @@ def get_keyboards():
         ]
     }
     keyboard_frequency = convertToString(keyboard_frequency)
+
+    keyboard_feedback = {
+        "one_time": True,
+        "buttons":[
+            [get_button(label="Отправить",color="default",payload="send_feedback")],
+            [get_button(label="Позже",color="default",payload="send_feedback_later")],
+            [get_button(label="Никогда",color="primary",payload="send_feedback_never")]
+        ]
+    }
+    keyboard_list = convertToString(keyboard_list)
+
     return{
         'start': keyboard_start,
         'main_menu_on': keyboard_main_menu_on,
@@ -201,5 +212,6 @@ def get_keyboards():
         'list': keyboard_list,
         'sphere': keyboard_sphere,
         'subjects': keyboard_subjects,
-        'frequency':keyboard_frequency
+        'frequency':keyboard_frequency,
+        'feedback', keyboard_feedback,
     }
