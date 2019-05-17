@@ -185,6 +185,7 @@ class Account(models.Model):
     spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "account", blank = True)
     subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "account", blank = True)
     tests           = models.ManyToManyField(ResultOfTest, verbose_name = "Результаты пройденных тестов", related_name = "account")
+    feedback        = models.CharField(max_length = 20, verbose_name = "Обратная связь", default = "false")
 
     class Meta:
         verbose_name        = "Пользователь"

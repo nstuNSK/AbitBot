@@ -5,12 +5,14 @@ import time
 import json
 import sys
 import requests
+from datetime import datetime
 from django.db.models import F
 from . import keyboards
 #import api_nstu_news as api
 from administrator.models import *
 
 SERVICE_KEY = "c1a71290c1a71290c1a71290b7c1cfa9fecc1a7c1a712909dcf1906a5e4cdbd9fbe3703"
+FREQUENCY_FEEDBACK = 0.9
 
 def auth():
     vk = vk_api.VkApi(token='f77e482fc0da16105d5dc35579dc14009893764743111e79864369756790fe6f0f688f6a01bb41ac2039c')
@@ -156,6 +158,23 @@ def data_processing(id, pay, msg):
 
     elif pay == "main_menu":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard":get_main_keyboard(user = user)})
+        # if user.feedback != "never" and user.feedback != "true":
+        #     if user.feedback == "false":
+        #         num = random.random()
+        #         if num >= FREQUENCY_FEEDBACK:
+        #             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard":key['feedback']})
+        #             user.feedback = datetime.now().date().strftime("%d.%m.%Y")
+        #             user.save()
+        #     else:
+        #         time = user.feedback
+        #         date = datetime.strptime(time, "%d.%m.%Y").date()
+        #         days = (datetime.now().date() - date).days
+        #         if days > 6:
+        #             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard": key['feedback']})
+        #             user.feedback = datetime.now().date().strftime("%d.%m.%Y")
+        #             user.save()
+        # else:
+        #     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("MAIN_MENU")), "keyboard":get_main_keyboard(user = user)})
 
     elif pay=="subscribe":
         if user.subscribe == False:
