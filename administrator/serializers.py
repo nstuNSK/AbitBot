@@ -50,7 +50,7 @@ class AnswerSerializer(serializers.ModelSerializer):
         return Answer.objects.create(**validate_data)
 
 class QuestionSerializer(serializers.ModelSerializer):
-
+    answers = AnswerSerializer(many=True)
     class Meta:
         model = Question
         fields = (
@@ -65,21 +65,20 @@ class QuestionSerializer(serializers.ModelSerializer):
         validate_data.pop("answers")
         question = Question.objects.create(**validate_data)
         for item in answers:
-            serializer = AnswerSerializer(item)
-            serializer.is_valid()
+            serializer = AnswerSerializer(data=item)
+            serializer.is_valid(raise_exception = True)
             serializer.save()
-            question.add(serializer)
+            answer = Answer.objects.get(id = serializer.data["id"])
+            question.answers.add(answer)
         return question
 
 class TestSerializer(serializers.ModelSerializer):
-
+    questions = QuestionSerializer(many=True)
     class Meta:
         model = Test
         fields = (
             "id",
             "name",
-            "updated_date",
-            "start_date",
             "questions",
             "active"
         )
@@ -87,12 +86,16 @@ class TestSerializer(serializers.ModelSerializer):
     def create(self, validate_data):
 
         data = []
-        questions = validate_data.get("questions")
-        validate_data.pop("questions")
-        tets = Test.objects.create(**validate_data)
+        if "questions" in validate_data:
+            questions = validate_data.get("questions")
+            validate_data.pop("questions")
+        else:
+            questions = []
+        test = Test.objects.create(**validate_data)
         for item in questions:
-            serializer = QuestionsSerializer(item)
-            serializer.is_valid()
+            serializer = QuestionSerializer(data=item)
+            serializer.is_valid(raise_exception = True)
             serializer.save()
-            test.add(serializer)
+            question = Question.objects.get(id=serializer.data["id"])
+            test.questions.add(question)
         return test

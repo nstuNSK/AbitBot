@@ -81,8 +81,6 @@ class TestAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        "updated_date",
-        "start_date"
     )
 
 admin.site.register(Test, TestAdmin)

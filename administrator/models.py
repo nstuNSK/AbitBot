@@ -146,8 +146,6 @@ class Test(models.Model):
     """Тест"""
 
     name            = models.CharField(max_length = 50, verbose_name = "Название")
-    updated_date    = models.DateTimeField(verbose_name = "Дата и время изменения", auto_now = True)
-    start_date      = models.DateField(verbose_name="Дата начала теста")
     questions       = models.ManyToManyField(Question, verbose_name = "Вопросы", related_name="test", blank = True)
     active          = models.BooleanField(verbose_name = "Активный", default = False)
 

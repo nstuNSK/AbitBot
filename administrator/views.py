@@ -10,7 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 from AbitBot import settings
-from .serializers import UserSerializer, NewsSerializer
+from .serializers import UserSerializer, NewsSerializer, TestSerializer
 from .models import *
 from .db import configure, create_msgs, create_test
 
@@ -45,16 +45,14 @@ class LoginView(APIView):
             except User.DoesNotExist:
                 return Response(status = status.HTTP_400_BAD_REQUEST)
 
+# class TestView(APIView):
+#     permission_classes = (IsAuthenticated,)
+#     parser_classes = (JSONParser,)
+#     serializer_class = UserSerializer
 
-
-class TestView(APIView):
-    permission_classes = (IsAuthenticated,)
-    parser_classes = (JSONParser,)
-    serializer_class = UserSerializer
-
-    def get(self, request):
-        user = UserSerializer(request.user)
-        return Response(data = user.data, status = status.HTTP_200_OK)
+#     def get(self, request):
+#         user = UserSerializer(request.user)
+#         return Response(data = user.data, status = status.HTTP_200_OK)
 
 class NewsList(APIView):
     permission_classes = (IsAuthenticated,)
@@ -85,13 +83,13 @@ class NewsView(APIView):
 
     def post(self,request):
         data = request.data
-        # try:
-        res = NewsSerializer(data = data)
-        res.is_valid()
-        res.save()
-        return Response(data = res.data, status = status.HTTP_200_OK)
-        # except:
-        #     return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
+        try:
+            res = NewsSerializer(data = data)
+            res.is_valid()
+            res.save()
+            return Response(data = res.data, status = status.HTTP_200_OK)
+        except:
+            return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
     def put(self,request):
@@ -158,22 +156,24 @@ class TestView(APIView):
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
     def post(self,request):
-        try:
-            res = TestSerializer(data)
-            res.is_valid()
+        # try:
+            data = request.data
+            print(data)
+            res = TestSerializer(data=data)
+            res.is_valid(raise_exception = True)
             res.save()
             return Response(data = res.data, status = status.HTTP_200_OK)
-        except:
-            return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
+        # except:
+        #     return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
 
 
     def put(self,request):
         data = request.data
-        if "id" in data:
+        if "id" in request.GET:
             try:
-                test = Test.objects.get(id=data["id"])
+                test = Test.objects.get(id=request.GET["id"])
                 res = TestSerializer(test, data)
-                res.is_valid()
+                res.is_valid(raise_exception = True)
                 res.save()
                 return Response(data = res.data, status = status.HTTP_200_OK)
             except:
@@ -184,9 +184,9 @@ class TestView(APIView):
 
     def delete(self,request):
         data = request.data
-        if "id" in data:
-            id = data["id"]
-            test = Tests.objects.get(id=id)
+        if "id" in request.GET:
+            id = request.GET["id"]
+            test = Test.objects.get(id=id)
             test.delete()
             return Response(status = status.HTTP_204_NO_CONTENT)
         else:
@@ -199,6 +199,6 @@ class TestPublic(APIView):
         if "id" in request.GET:
             id = request.GET["id"]
             test = Test.objects.get(id=id)
-            test.active = True
+            test.active = not test.active
             test.save()
             return Response(status = status.HTTP_204_NO_CONTENT)
