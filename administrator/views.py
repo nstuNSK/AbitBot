@@ -1,4 +1,4 @@
-from django.contrib.auth.signals import user_logged_in
+﻿from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,17 +8,32 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_jwt.utils import jwt_payload_handler, jwt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from django.http import HttpResponse
+from django.template import Context, loader
 
 from AbitBot import settings
 from .serializers import UserSerializer, NewsSerializer, TestSerializer
 from .models import *
 from .db import configure, create_msgs, create_test
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return None
+
+
 def getJWT(user):
     payload = jwt_payload_handler(user)
     return jwt.encode(payload, settings.SECRET_KEY)
 
 def index(request):
+	if request.method == "GET":
+	    template=loader.get_template("index.html")
+	    return HttpResponse(template.render())
+	
+def createdb(request):
     if request.method == "POST":
         configure()
         create_msgs()
@@ -27,9 +42,11 @@ def index(request):
     else:
         return Response(status = status.HTTP_400_BAD_REQUEST)
 
+
 class LoginView(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def post(self, request):
         data = request.data
@@ -57,6 +74,7 @@ class LoginView(APIView):
 class NewsList(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def get(self,request):
         news = News.objects.all()
@@ -68,6 +86,7 @@ class NewsList(APIView):
 class NewsView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def get(self,request):
         if "id" in request.GET:
@@ -80,7 +99,7 @@ class NewsView(APIView):
                 return Response(data = {"error": "Новость не найдена"}, status = status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
-
+    
     def post(self,request):
         data = request.data
         try:
@@ -90,7 +109,6 @@ class NewsView(APIView):
             return Response(data = res.data, status = status.HTTP_200_OK)
         except:
             return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
-
 
     def put(self,request):
         data = request.data
@@ -118,6 +136,7 @@ class NewsView(APIView):
 
 class NewsPublic(APIView):
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def get(self, request):
         if "id" in request.GET:
@@ -131,6 +150,7 @@ class NewsPublic(APIView):
 class TestList(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def get(self,request):
         Tests = Test.objects.all()
@@ -142,6 +162,8 @@ class TestList(APIView):
 class TestView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
 
     def get(self,request):
         if "id" in request.GET:
@@ -154,7 +176,7 @@ class TestView(APIView):
                 return Response(data = {"error": "Тест не найден"}, status = status.HTTP_400_BAD_REQUEST)
         else:
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
-
+    
     def post(self,request):
         # try:
             data = request.data
@@ -165,7 +187,6 @@ class TestView(APIView):
             return Response(data = res.data, status = status.HTTP_200_OK)
         # except:
         #     return Response(data = {"error": "Что-то пошло не так"}, status = status.HTTP_400_BAD_REQUEST)
-
 
     def put(self,request):
         data = request.data
@@ -181,7 +202,6 @@ class TestView(APIView):
         else:
             return Response(data = {"error": "Отсутствуют нужные поля"}, status = status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self,request):
         data = request.data
         if "id" in request.GET:
@@ -194,6 +214,8 @@ class TestView(APIView):
 
 class TestPublic(APIView):
     permission_classes = (IsAuthenticated,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
 
     def get(self, request):
         if "id" in request.GET:
