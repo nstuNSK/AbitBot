@@ -8,6 +8,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_jwt.utils import jwt_payload_handler, jwt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.http import HttpResponse
 from django.template import Context, loader
 
@@ -46,7 +47,7 @@ def createdb(request):
 class LoginView(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
     def post(self, request):
         data = request.data
@@ -74,7 +75,7 @@ class LoginView(APIView):
 class NewsList(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
     def get(self,request):
         news = News.objects.all()
@@ -86,7 +87,7 @@ class NewsList(APIView):
 class NewsView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
     def get(self,request):
         if "id" in request.GET:
@@ -136,7 +137,7 @@ class NewsView(APIView):
 
 class NewsPublic(APIView):
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get(self, request):
         if "id" in request.GET:
@@ -150,7 +151,7 @@ class NewsPublic(APIView):
 class TestList(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get(self,request):
         Tests = Test.objects.all()
@@ -162,7 +163,7 @@ class TestList(APIView):
 class TestView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
 
     def get(self,request):
@@ -214,7 +215,7 @@ class TestView(APIView):
 
 class TestPublic(APIView):
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (CsrfExemptSessionAuthentication,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
 
     def get(self, request):

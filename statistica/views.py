@@ -9,10 +9,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_jwt.utils import jwt_payload_handler, jwt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from statistica.actions import *
 from administrator.models import *
-
+from administrator.views import CsrfExemptSessionAuthentication
 
 import requests
 import csv
@@ -21,6 +22,7 @@ import json
 class StatisticaView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
     def get(self, request):
         try:
