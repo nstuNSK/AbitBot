@@ -85,12 +85,11 @@ def search_direction(user, type, extra = 0):
                     dir.append(direction)
         
         dir.sort(key = lambda x: x.RN, reverse = False)
+        test_print(user, "search!")
         r = get_directions_from_page(dir, extra)
         dir = r[0]
         has_next = r[1]
         temp_keyboard = get_temp_keyboard(type, extra+1, has_next)
-
-
 
         if len(dir)!=0:
             #test
@@ -315,15 +314,12 @@ def data_processing(id, pay, msg):
         search_direction(user = user, type = "SUBJECTS")
     
     elif "search_by_sphere" in pay:
+        pay = pay.replace("\\", "")
         pay = json.loads(pay)
         search_direction(user = user, type = "SPHERE", extra = pay["page"])
     elif "search_by_subjects" in pay:
         pay = pay.replace("\\", "")
-        test_print(user, pay)
-        try:
-            pay = json.loads(pay)
-        except Exception as e:
-            test_print(user, e)
+        pay = json.loads(pay)
         test_print(user, pay["page"])
         search_direction(user = user, type = "SUBJECTS", extra = pay["page"])
 
