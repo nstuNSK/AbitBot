@@ -3,7 +3,7 @@ from administrator.views import *
 
 urlpatterns = [
     path('', index),
-    path('create/', createdb),
+    path('create/', Createdb.as_view()),
     path('login/', LoginView.as_view()),
     path('testView/', TestView.as_view()),
     path('tests/', TestList.as_view()),

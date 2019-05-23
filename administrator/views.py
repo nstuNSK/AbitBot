@@ -34,14 +34,16 @@ def index(request):
 	    template=loader.get_template("index.html")
 	    return HttpResponse(template.render())
 	
-def createdb(request):
-    if request.method == "POST":
+class Createdb(APIView):
+    permission_classes = (AllowAny,)
+    parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+
+    def get(self, request):
         configure()
-        create_msgs()
-        create_test()
+        #create_msgs()
+        #create_test()
         return Response(status = status.HTTP_204_NO_CONTENT)
-    else:
-        return Response(status = status.HTTP_400_BAD_REQUEST)
 
 
 class LoginView(APIView):

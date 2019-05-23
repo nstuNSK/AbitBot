@@ -37,6 +37,7 @@ id,first_name,last_name,city,sex,bdate,university,university_name,faculty,facult
 308440137,Маргарита,Фомина,Новосибирск,1,21.12,,,,,,,,,False,True,
 332143993,Алексей,Акишин,Новосибирск,2,,0,,0,,,,0,,False,True,
 344900090,Вадим,Каракулин,Павлодар,2,,,,,,,,,,False,True,
+470112254,Даша,Эльф,,1,,,,,,,,,,True,False,
 472295906,Nick,Derulo,Tromsø,2,11.7,,,,,,,,,False,True,
 476120707,Анжела,Хитрова,Новосибирск,1,,,,,,,,,,False,True,
 487676382,Anastasiya,Pashchenko,Талдыкорган,1,3.3.2002,0,,0,,,,0,Гимназия №12 (бывш. 19),False,True,
