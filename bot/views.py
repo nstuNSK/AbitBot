@@ -17,6 +17,11 @@ def index(request):
         
         if data["type"] == "message_new":
             obj = data["object"]
+
+            if obj["form_id"] != "176468928":
+                bot.data_processing(id = obj["from_id"], pay = "engineering_works", msg = obj["text"])
+                return HttpResponse("ok", status = 200)
+
             if "payload" in obj:
                 pay = obj["payload"][1:-1]
                 try:
@@ -26,12 +31,8 @@ def index(request):
                 bot.data_processing(id = obj["from_id"], pay = pay, msg = obj["text"])
             else:
                 bot.data_processing(id = obj["from_id"], pay = " ", msg = obj["text"])
-                #elif data["type"] == "group_join":
-
-                #elif data["type"] == "group_leave":
             return HttpResponse("ok", status = 200)
-        #elif data["secret"] == secretKey1 and data["group_id"] == groupId1 and data["type"] == 'confirmation':
-        #    return HttpResponse(accesString1)
+
         elif data["secret"] == secretKey and data["group_id"] == groupId and data["type"] == 'confirmation':
             return HttpResponse(accesString2)
                 
