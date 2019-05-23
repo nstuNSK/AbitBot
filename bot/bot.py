@@ -90,7 +90,7 @@ def search_direction(user, type, extra = 0):
         has_next = r[1]
         temp_keyboard = get_temp_keyboard(type, extra+1, has_next)
 
-        test_print(user, len(dir))
+        test_print(user, extra+str(len(dir)))
 
 
         if len(dir)!=0:
@@ -120,15 +120,18 @@ def search_direction(user, type, extra = 0):
                             response = response + "Направление: " + '"' + item.name + '"' + " на факультете " + item.faculty + "\n" +"Ссылка на направление: " + item.url+"\n\n"
                         else:
                             response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
-                        if len(response)>3500:
-                            user.random_id = user.random_id + 1
-                            user.save()
-                            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
-                            response = ""
+                        # if len(response)>3500:
+                        #     user.random_id = user.random_id + 1
+                        #     user.save()
+                        #     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
+                        #     response = ""
                     except Exception as e:
                         user.random_id = user.random_id + 1
                         user.save()
                         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": e})
+                user.random_id = user.random_id + 1
+                user.save()
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
                 # if response!="":
                 #     user.random_id = user.random_id + 1
                 #     user.save()
