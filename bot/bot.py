@@ -106,58 +106,28 @@ def search_direction(user, type, extra = 0):
         temp_keyboard = get_temp_keyboard(type, int(extra)+1, has_next)
 
         if len(dir)!=0:
-            #test
-            # if dir[0] == False:
-            #     test_print(user, "2")
-                
-            # else:
-                if int(extra) == 0:
-                    user.random_id = user.random_id + 1
-                    user.save()
-                    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message":random.choice(from_pay_to_msg("SEARCH_DIRECTION_START"))})
-                response = ""
-                for item in dir:
-                    try:
-                        if item.profile_name == None:
-                            response = response + "Направление: " + '"' + item.name + '"' + " на факультете " + item.faculty + "\n" +"Ссылка на направление: " + item.url+"\n\n"
-                        else:
-                            response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
-                        # if len(response)>3500:
-                        #     user.random_id = user.random_id + 1
-                        #     user.save()
-                        #     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
-                        #     response = ""
-                    except Exception as e:
-                        user.random_id = user.random_id + 1
-                        user.save()
-                        vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": e})
+            if int(extra) == 0:
                 user.random_id = user.random_id + 1
                 user.save()
-                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
-                # if response!="":
-                #     user.random_id = user.random_id + 1
-                #     user.save()
-                #     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
-                # user.random_id = user.random_id + 1
-                # user.save()
-                # vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END")), 'keyboard': get_main_keyboard(user = user)})
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message":random.choice(from_pay_to_msg("SEARCH_DIRECTION_START"))})
+            response = ""
+            for item in dir:
+                try:
+                    if item.profile_name == None:
+                        response = response + "Направление: " + '"' + item.name + '"' + " на факультете " + item.faculty + "\n" +"Ссылка на направление: " + item.url+"\n\n"
+                    else:
+                        response = response + "Направление: " + '"' + item.name + ' (' + item.profile_name + ')' + '"' + " на факультете " + item.faculty+ "\n" +"Ссылка на направление: " + item.url+"\n\n"
+                except Exception as e:
+                    user.random_id = user.random_id + 1
+                    user.save()
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": e})
+            user.random_id = user.random_id + 1
+            user.save()
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
         else:
             user.random_id = user.random_id + 1
             user.save()
             vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END")), 'keyboard': get_main_keyboard(user = user)})
-
-            # user.random_id = user.random_id + 1
-            # user.save()
-            # if type == "SPHERE":
-            #     if len(user.spheres.all()) == 0:
-            #         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_ERROR")), 'keyboard': key['sphere']})
-            #     else:
-            #         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': get_main_keyboard(user = user)})
-            # elif type == "SUBJECTS":
-            #     if len(user.subjects.all()) == 0:
-            #         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_ERROR")), 'keyboard': key['subjects']})
-            #     else:
-            #         vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': get_main_keyboard(user = user)})
     except Exception as e:
         user.random_id = user.random_id + 1
         user.save()
