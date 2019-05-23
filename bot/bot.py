@@ -85,7 +85,7 @@ def search_direction(user, type, extra = 0):
                     dir.append(direction)
         
         dir.sort(key = lambda x: x.RN, reverse = False)
-        r = get_directions_from_page(dir, extra)
+        r = get_directions_from_page(dir, int(extra))
         dir = r[0]
         has_next = r[1]
         test_print(user, "2")
