@@ -88,9 +88,9 @@ def search_direction(user, type, extra = 0):
         r = get_directions_from_page(dir, extra)
         dir = r[0]
         has_next = r[1]
+        test_print(user, "2")
         temp_keyboard = get_temp_keyboard(type, extra+1, has_next)
 
-        test_print(user, "2")
         if len(dir)!=0:
             #test
             if dir[0] == False:
