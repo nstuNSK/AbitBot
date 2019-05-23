@@ -61,7 +61,7 @@ def get_temp_keyboard(type, page, has_next):
 def test_print(user, text):
     user.random_id = user.random_id + 1
     user.save()
-    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": text, 'keyboard': key['sphere']})  
+    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": text})  
 
 def search_direction(user, type, extra = 0):
     try:
