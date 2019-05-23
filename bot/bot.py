@@ -90,7 +90,7 @@ def search_direction(user, type, extra = 0):
         has_next = r[1]
         temp_keyboard = get_temp_keyboard(type, extra+1, has_next)
 
-        test_print(user, temp_keyboard)
+        test_print(user, dir)
 
 
         if len(dir)!=0:
