@@ -318,6 +318,7 @@ def data_processing(id, pay, msg):
         pay = json.loads(pay)
         search_direction(user = user, type = "SPHERE", extra = pay["page"])
     elif "search_by_subjects" in pay:
+        test_print(user, pay)
         try:
             pay = json.loads(pay)
         except Exception as e:
