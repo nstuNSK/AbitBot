@@ -315,7 +315,7 @@ def data_processing(id, pay, msg):
         search_direction(user = user, type = "SUBJECTS")
     
     elif "search_by_sphere" in pay:
-        test_print(user, "here")
+        test_print(user, pay)
         pay = json.loads(pay)
         test_print(user, pay["page"])
         search_direction(user = user, type = "SPHERE", extra = pay["page"])
