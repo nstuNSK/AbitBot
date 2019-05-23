@@ -52,9 +52,9 @@ def get_temp_keyboard(type, page, has_next):
         }
     if has_next:
         if type == "SPHERE":
-            key["buttons"].insert(0, [keyboards.get_button(label="Еще",color="primary",payload="{'pay':'search_by_sphere', 'page':"+'"'+str(page)+'"'+"}")])
+            key["buttons"].insert(0, [keyboards.get_button(label="Еще",color="primary",payload='{"pay":"search_by_sphere", "page":"'+str(page)+'"}')])
         else:
-            key["buttons"].insert(0, [keyboards.get_button(label="Еще",color="primary",payload="{'pay':'search_by_subjects', 'page':"+'"'+str(page)+'"'+"}")])
+            key["buttons"].insert(0, [keyboards.get_button(label="Еще",color="primary",payload='{"pay":"search_by_subjects", "page":"'+str(page)+'"}')])
     
     return keyboards.convertToString(key)
 
