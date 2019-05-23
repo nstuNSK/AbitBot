@@ -57,7 +57,11 @@ def get_temp_keyboard(type, page, has_next):
             key["buttons"].insert(0, [keyboards.get_button(label="Еще",color="primary",payload="{'pay':'search_by_subjects', 'page':"+str(page)+"}")])
     
     return keyboards.convertToString(key)
-    
+
+def test_print(user, text):
+    user.random_id = user.random_id + 1
+    user.save()
+    vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": text, 'keyboard': key['sphere']})  
 
 def search_direction(user, type, extra = 0):
     try:
@@ -85,6 +89,8 @@ def search_direction(user, type, extra = 0):
         dir = r[0]
         has_next = r[1]
         temp_keyboard = get_temp_keyboard(type, extra+1, has_next)
+
+        test_print(user, temp_keyboard)
 
 
         if len(dir)!=0:
