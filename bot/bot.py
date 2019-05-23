@@ -45,6 +45,9 @@ def search_direction(user, type):
                     flag = False
             if flag:
                 dir.append(direction)
+    
+    dir.sort(key = lambda x: x.RN, reverse = False)
+    
     if len(dir)!=0:
         user.random_id = user.random_id + 1
         user.save()

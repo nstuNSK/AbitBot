@@ -40,8 +40,8 @@ class Createdb(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get(self, request):
-        configure()
-        #create_msgs()
+        # configure()
+        create_msgs()
         #create_test()
         return Response(status = status.HTTP_204_NO_CONTENT)
 
