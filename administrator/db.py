@@ -21,7 +21,8 @@ def configure():
                                         url = direction["URL"],
                                         description = direction["DESCR"],
                                         profile_name = direction["PROFILE_NAME"],
-                                        idNSTU = direction["ID"])
+                                        idNSTU = direction["ID"],
+                                        RH = direction["RN"])
         spheres = direction["data"]
         if spheres[0]["SPHERE"] != None:
             for sphere in spheres:

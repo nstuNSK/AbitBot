@@ -99,6 +99,7 @@ class Direction(models.Model):
     profile_name    = models.CharField(max_length = 50, verbose_name = "Профиль", null = True)
     spheres         = models.ManyToManyField(Sphere, verbose_name = "Сферы", related_name= "direction", blank = True)
     subjects        = models.ManyToManyField(Subject, verbose_name = "Предметы", related_name= "direction", blank = True)
+    RN              = models.IntegerField(verbose_name="Приоритет", null = True)
 
     class Meta:
         verbose_name        = "Направление"
