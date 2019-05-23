@@ -221,6 +221,7 @@ def get_result(pay,user):
 
 def data_processing(id, pay, msg):
     user = Account.objects.get_or_create(id = id)[0]
+    test_print(user, pay)
     if pay=='"command":"start"' or pay == "admin" or "привет" in msg.lower():
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
         user.random_id = user.random_id + 1
@@ -315,10 +316,12 @@ def data_processing(id, pay, msg):
         search_direction(user = user, type = "SUBJECTS")
     
     elif "search_by_sphere" in pay:
+        test_print(user, "here")
         pay = json.loads(pay)
         test_print(user, pay["page"])
         search_direction(user = user, type = "SPHERE", extra = pay["page"])
     elif "search_by_subjects" in pay:
+        test_print(user, "here")
         pay = json.loads(pay)
         test_print(user, pay["page"])
         search_direction(user = user, type = "SUBJECTS", extra = pay["page"])
