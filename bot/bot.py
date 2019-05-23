@@ -89,11 +89,11 @@ def search_direction(user, type, extra = 0):
         dir = r[0]
         has_next = r[1]
         temp_keyboard = get_temp_keyboard(type, int(extra)+1, has_next)
-        test_print(user, "2")
 
         if len(dir)!=0:
             #test
             if dir[0] == False:
+                test_print(user, "2")
                 user.random_id = user.random_id + 1
                 user.save()
                 if type == "SPHERE":
@@ -320,7 +320,6 @@ def data_processing(id, pay, msg):
     elif "search_by_subjects" in pay:
         pay = pay.replace("\\", "")
         pay = json.loads(pay)
-        test_print(user, pay["page"])
         search_direction(user = user, type = "SUBJECTS", extra = pay["page"])
 
     elif pay == "lists":
