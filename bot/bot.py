@@ -97,7 +97,8 @@ def search_direction(user, type, extra = 0):
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_ERROR")), 'keyboard': key['subjects']})
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_NOT_FOUND")), 'keyboard': get_main_keyboard(user = user)})
-
+            return
+        
         dir.sort(key = lambda x: x.RN, reverse = False)
         r = get_directions_from_page(dir, int(extra))
         dir = r[0]
