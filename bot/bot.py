@@ -123,7 +123,11 @@ def search_direction(user, type, extra = 0):
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": e})
             user.random_id = user.random_id + 1
             user.save()
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
+            if has_next:
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response, "keyboard": temp_keyboard})
+            else:
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": response})
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("READY_TO_NEW_SEARCH")), 'keyboard': temp_keyboard})
         else:
             user.random_id = user.random_id + 1
             user.save()
