@@ -127,8 +127,7 @@ def search_direction(user, type, extra = 0):
         else:
             user.random_id = user.random_id + 1
             user.save()
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END"))})
-            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("READY_TO_NEW_SEARCH")), 'keyboard': get_main_keyboard(user = user)})
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": user.id,"message": random.choice(from_pay_to_msg("SEARCH_DIRECTION_END")), 'keyboard': get_main_keyboard(user = user)})
     except Exception as e:
         user.random_id = user.random_id + 1
         user.save()
