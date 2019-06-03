@@ -202,7 +202,7 @@ def get_keyboards():
             [get_button(label="Никогда",color="primary",payload="send_feedback_never")]
         ]
     }
-    keyboard_list = convertToString(keyboard_list)
+    # keyboard_list = convertToString(keyboard_list)
 
     return{
         'start': keyboard_start,
