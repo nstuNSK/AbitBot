@@ -309,8 +309,10 @@ def data_processing(id, pay, msg):
     elif pay == "lk_code":
         user.state = True
         user.save()
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета."})
-
+        if user.lk_code != 0:
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета.\nВаш текущий код: "+str(user.lk_code)})
+        else:
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета."})
     elif pay == "frequency":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
 
