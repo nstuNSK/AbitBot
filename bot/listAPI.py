@@ -54,3 +54,17 @@ def check_abit(id):
         return False
 
 
+def get_abit(id):
+    abits = get_reitings()["abits"]
+    flag = False
+    response = []
+    for abit in abits:
+        if abit["ID"] == id:
+            flag = True
+            response.append(abit)
+        elif flag and abit["ID"]!= id:
+            return response
+    return False
+
+
+

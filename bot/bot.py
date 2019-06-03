@@ -313,6 +313,27 @@ def data_processing(id, pay, msg):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета.\nВаш текущий код: "+str(user.lk_code)})
         else:
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета."})
+    elif pay == "position":
+        if user.lk_code != 0:
+            abit = get_abit(user.lk_code)
+            if abit:
+                count  = len(abit)
+                answer = "Вы подали документы на "+str(count)+" направление(ий).\n"
+                for prof in abit:
+                    answer = answer + "По направлению "+prof["COMPETITION"]+" вы находитесь на "+str(prof["POS"])+" месте!\n"
+                    if prof["MSG_NUM"] == 1:
+                        answer = answer + "Есть вероятность поступления на бюджетное место!\n"
+                    elif prof["MSG_NUM"] == 2:
+                        answer = answer + "Гарантировано поступление на бюджетное место!\n"
+                    elif prof["MSG_NUM"] == 3:
+                        answer = answer + "Есть вероятность поступления на платное место!\n"
+                    elif prof["MSG_NUM"] == 4:
+                        answer = answer + "Гарантировано поступление на платное место!\n"
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": answer, 'keyboard': key['list']})
+                    user.random_id = user.random_id+1
+                    user.save()
+                    answer = ""
+    
     elif pay == "frequency":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
 
