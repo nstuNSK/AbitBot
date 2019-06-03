@@ -1,6 +1,6 @@
 import requests
 import datetime
-# from AbitBot import settings
+from AbitBot import settings
 
 API_KEY = "s13dfget456DADHGWEv34g435f"
 

@@ -326,6 +326,7 @@ def data_processing(id, pay, msg):
     elif user.state and msg:
         abit = check_abit(id = msg)
         user.state = False
+        user.save()
         if abit["exists"] == 1:
             user.lk_code = msg
             user.save()
