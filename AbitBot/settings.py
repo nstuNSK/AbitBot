@@ -41,10 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_crontab',
 
     'bot',
     'administrator',
 ]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'bot.cron.checkList', '>> /home/desctop/file.log')
+]
+
+CRONTAB_COMMAND_SUFFIX = '2>&1'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -171,6 +178,8 @@ JWT_AUTH = {
  
 }
 AUTH_USER_MODEL = "administrator.User"
+
+API_KEY = "s13dfget456DADHGWEv34g435f"
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/Main/AbitBot/static'
