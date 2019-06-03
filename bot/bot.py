@@ -318,7 +318,7 @@ def data_processing(id, pay, msg):
             abit = get_abit(user.lk_code)
             if abit:
                 count  = len(abit)
-                answer = "Вы подали документы на "+str(count)+" направление(ий).\n"
+                answer = "Вы подали документы на "+str(count)+" направление(ий).\n\n"
                 for prof in abit:
                     answer = answer + "По направлению "+prof["COMPETITION"]+" вы находитесь на "+str(prof["POS"])+" месте!\n"
                     if prof["MSG_NUM"] == 1:
