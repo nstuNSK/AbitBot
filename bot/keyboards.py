@@ -88,7 +88,7 @@ def get_keyboards():
             [get_button(label="Отписаться от новостей",color="default",payload="subscribe")],
             [get_button(label="Подбор направления",color="default",payload="direction_selection")],
             [get_button(label="Тесты",color="default",payload="tests")],
-            [get_button(label="Конкурсные списки",color="default",payload="lists")]
+            # [get_button(label="Конкурсные списки",color="default",payload="lists")]
         ]
     }
     keyboard_main_menu_on = convertToString(keyboard_main_menu_on)
@@ -119,7 +119,7 @@ def get_keyboards():
         "buttons":[
             [get_button(label="Ввести код из ЛК НГТУ",color="default",payload="lk_code")],
             [get_button(label="На каком я месте?",color="default",payload="position")],
-            [get_button(label="Частота уведомлений",color="default",payload="frequency")],
+            # [get_button(label="Частота уведомлений",color="default",payload="frequency")],
             [get_button(label="Главное меню",color="primary",payload="main_menu")]
         ]
     }
