@@ -11,7 +11,7 @@ from . import keyboards
 #import api_nstu_news as api
 from administrator.models import *
 from django.core.paginator import Paginator
-from listAPI import *
+from bot.listAPI import *
 
 SERVICE_KEY = "c1a71290c1a71290c1a71290b7c1cfa9fecc1a7c1a712909dcf1906a5e4cdbd9fbe3703"
 FREQUENCY_FEEDBACK = 0.9
