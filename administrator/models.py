@@ -180,7 +180,7 @@ class Account(models.Model):
 
     id                  = models.IntegerField(verbose_name="id", primary_key = True)
     random_id           = models.IntegerField(verbose_name="идентификатор сообщений", default = 0 )
-    lk_code             = models.IntegerField(verbose_name="Код личного кабинета", default = 0)
+    lk_code             = models.CharField(max_length = 60, verbose_name="Код личного кабинета", default = 0)
     state               = models.BooleanField(verbose_name="Состояние", default = False)
     currency_snap_id    = models.IntegerField(verbose_name="Текущий снимок", default= -1)
     subscribe           = models.BooleanField(default=False, verbose_name ="Подписка")
