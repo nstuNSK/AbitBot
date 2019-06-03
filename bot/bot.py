@@ -327,7 +327,7 @@ def data_processing(id, pay, msg):
         abit = check_abit(id = msg)
         user.state = False
         user.save()
-        if abit[0]["exists"] == 1:
+        if abit[0]["EXISTS"] == 1:
             user.lk_code = msg
             user.save()
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Вы успешно добавлены в систему!", "keyboard": key['list']})
