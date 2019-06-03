@@ -11,6 +11,7 @@ from . import keyboards
 #import api_nstu_news as api
 from administrator.models import *
 from django.core.paginator import Paginator
+from listAPI import *
 
 SERVICE_KEY = "c1a71290c1a71290c1a71290b7c1cfa9fecc1a7c1a712909dcf1906a5e4cdbd9fbe3703"
 FREQUENCY_FEEDBACK = 0.9
@@ -306,7 +307,9 @@ def data_processing(id, pay, msg):
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Выберите функцию:", "keyboard": key['list']})
 
     elif pay == "lk_code":
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
+        user.state = True
+        user.save()
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Введите код из личного кабинета."})
 
     elif pay == "frequency":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Меня пока что этому не научили😞\nНо совсем скоро научат, обещаю!", "keyboard": get_main_keyboard(user = user)})
@@ -319,6 +322,17 @@ def data_processing(id, pay, msg):
 
     elif pay[0]=="A":
         get_result(pay = pay, user = user)
+
+    elif user.state and msg:
+        abit = check_abit(id = msg)
+        user.state = False
+        if abit["exists"] == 1:
+            user.lk_code = msg
+            user.save()
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Вы успешно добавлены в систему!", "keyboard": key['list']})
+        else:
+            vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Код не найден.", "keyboard": key['list']})
+
 
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})

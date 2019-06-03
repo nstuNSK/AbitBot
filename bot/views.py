@@ -18,9 +18,9 @@ def index(request):
         if data["type"] == "message_new":
             obj = data["object"]
 
-            # if obj["from_id"] != 176468928:
-            #     bot.data_processing(id = obj["from_id"], pay = "engineering_works", msg = obj["text"])
-            #     return HttpResponse("ok", status = 200)
+            if obj["from_id"] != 176468928:
+                bot.data_processing(id = obj["from_id"], pay = "engineering_works", msg = obj["text"])
+                return HttpResponse("ok", status = 200)
 
             if "payload" in obj:
                 pay = obj["payload"][1:-1]
