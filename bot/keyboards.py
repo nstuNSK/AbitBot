@@ -77,7 +77,7 @@ def get_keyboards():
             [get_button(label="Подписаться на новости",color="default",payload="subscribe")],
             [get_button(label="Подбор направления",color="default",payload="direction_selection")],
             [get_button(label="Тесты",color="default",payload="tests")],
-            [get_button(label="Конкурсные списки",color="default",payload="lists")]
+            # [get_button(label="Конкурсные списки",color="default",payload="lists")]
         ]
     }
     keyboard_main_menu_off = convertToString(keyboard_main_menu_off)
