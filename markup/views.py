@@ -24,7 +24,7 @@ class Class_Add(APIView):
 
 
     def add_class(self, num, id, df):
-        df.loc[int(id-1), 'classes'] += str(num)+" "
+        df.loc[int(id)-1, 'classes'] += str(num)+" "
     
     def add_classes(self, objs):
         # results = finders.find('files/q.csv')
