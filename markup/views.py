@@ -67,7 +67,7 @@ class Get_Questions(APIView):
         return sample.values
 
     def convert_to_json(self, sample):
-        result = {"questions" []}
+        result = {"questions": []}
         for s in sample:
             result["questions"].append({"id": s[0], "question": s[1]})
         return result
