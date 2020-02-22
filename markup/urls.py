@@ -1,5 +1,5 @@
 from django.urls import path, include
-from markup.views import views
+from markup.views import *
 
 urlpatterns = [
     path('add_class/', Class_Add.as_view()),
