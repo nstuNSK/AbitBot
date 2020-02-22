@@ -28,7 +28,7 @@ class Class_Add(APIView):
     
     def add_classes(self, objs):
         # results = finders.find('files/q.csv')
-        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8', delimiter=";")
+        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8')
         for obj in objs:
             self.add_class(obj['type'], obj['id'], df)
 
@@ -52,7 +52,7 @@ class Get_Questions(APIView):
 
     def get_q(self):
         # results = finders.find('files/q.csv')
-        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8', delimiter=";")
+        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8')
         available_q = df[df['count']<3]
         if len(available_q) % 10 == 0:
             count_of_samples = len(available_q)/10
