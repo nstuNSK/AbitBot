@@ -28,7 +28,7 @@ class Class_Add(APIView):
     
     def add_classes(self, objs):
         results = finders.find('files/q.csv')
-        df = pd.read_csv(results, encoding='utf8'. delimiter=";")
+        df = pd.read_csv(results, encoding='utf8', delimiter=";")
         for obj in objs:
             self.add_class(obj['type'], obj['id'], df)
 
