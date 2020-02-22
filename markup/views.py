@@ -76,7 +76,7 @@ class Get_Questions(APIView):
     def post(self, request):
         sample = self.get_q()
         result = self.convert_to_json(sample)
-        return Response(data = res, status = status.HTTP_200_OK)
+        return Response(data = result, status = status.HTTP_200_OK)
 
 
         
