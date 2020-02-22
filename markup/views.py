@@ -18,9 +18,9 @@ import random
 
 
 class Class_Add(APIView):
-    permission_classes = (AllowAny,)
-    parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+    # permission_classes = (AllowAny,)
+    # parser_classes = (JSONParser,)
+    # authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
 
     def add_class(self, num, id, df):
@@ -46,9 +46,9 @@ class Class_Add(APIView):
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
 class Get_Questions(APIView):
-    permission_classes = (AllowAny,)
-    parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+    # permission_classes = (AllowAny,)
+    # parser_classes = (JSONParser,)
+    # authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get_q(self):
         results = finders.find('files/q.csv')
