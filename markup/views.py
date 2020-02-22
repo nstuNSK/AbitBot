@@ -44,6 +44,7 @@ class Class_Add(APIView):
                 res = {"status": "success", "status_code": "200"}
                 return Response(data = res, status = status.HTTP_200_OK)
             except:
+                raise
                 res = {"status": "failed", "status_code": "400"}
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
