@@ -35,7 +35,7 @@ class Class_Add(APIView):
     
     def post(self, request):
         data = request.data
-        if mas in data:
+        if "mas" in data:
             questions = data['mas']
             try:
                 self.add_classes(questions)
