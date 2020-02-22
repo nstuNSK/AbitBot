@@ -52,7 +52,7 @@ class Get_Questions(APIView):
 
     def get_q(self):
         results = finders.find('files/q.csv')
-        df = pd.read_csv(results, encoding='utf8'. delimiter=";")
+        df = pd.read_csv(results, encoding='utf8', delimiter=";")
         available_q = df[df['count']<3]
         if len(available_q) % 10 == 0:
             count_of_samples = len(available_q)/10
