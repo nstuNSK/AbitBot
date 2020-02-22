@@ -32,6 +32,7 @@ class Class_Add(APIView):
         df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8')
         for obj in objs:
             self.add_class(obj['type'], obj['id'], df)
+        df.to_csv("/home/Main/AbitBot/static/files/q.csv", index=False)
 
     
     def post(self, request):
@@ -43,7 +44,6 @@ class Class_Add(APIView):
                 res = {"status": "success", "status_code": "200"}
                 return Response(data = res, status = status.HTTP_200_OK)
             except:
-                raise
                 res = {"status": "failed", "status_code": "400"}
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
