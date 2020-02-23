@@ -20,7 +20,7 @@ import random
 
 def index(request):
 	if request.method == "GET":
-	    template=loader.get_template("index.html")
+	    template=loader.get_template("index2.html")
 	    return HttpResponse(template.render())
 
 class Class_Add(APIView):
