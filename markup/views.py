@@ -17,6 +17,12 @@ from AbitBot import settings
 import pandas as pd
 
 import random
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
+
+class CsrfExemptSessionAuthentication(SessionAuthentication):
+
+    def enforce_csrf(self, request):
+        return None
 
 def index(request):
 	if request.method == "GET":
@@ -26,7 +32,7 @@ def index(request):
 class Class_Add(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (JSONParser,)
-    # authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
 
     def add_class(self, num, id, df):
@@ -56,7 +62,7 @@ class Class_Add(APIView):
 class Get_Questions(APIView):
     permission_classes = (AllowAny,)
     parser_classes = (JSONParser,)
-    # authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get_q(self):
         # results = finders.find('files/q.csv')
