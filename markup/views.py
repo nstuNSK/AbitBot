@@ -10,6 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.staticfiles import finders
+from django.http import HttpResponse
 from django.template import Context, loader
 
 from AbitBot import settings
