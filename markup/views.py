@@ -12,6 +12,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.staticfiles import finders
 from django.http import HttpResponse
 from django.template import Context, loader
+from .models import User_Question, Question_Mark
 
 from AbitBot import settings
 import pandas as pd
@@ -53,18 +54,6 @@ class Class_Add(APIView):
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
-
-    def add_class(self, num, id, df):
-        df.loc[int(id)-1, 'classes'] += str(num)+" "
-        df.loc[int(id)-1, 'count'] += 1
-    
-    def add_classes(self, objs):
-        # results = finders.find('files/q.csv')
-        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8')
-        for obj in objs:
-            self.add_class(obj['type'], obj['id'], df)
-        df.to_csv("/home/Main/AbitBot/static/files/q.csv", index=False)
-
     
     def post(self, request):
         data = request.data
@@ -83,32 +72,47 @@ class Get_Questions(APIView):
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
-    def get_q(self):
-        # results = finders.find('files/q.csv')
-        df = pd.read_csv("/home/Main/AbitBot/static/files/q.csv", encoding='utf8')
-        available_q = df[df['count']<3]
-        if len(available_q) % 10 == 0:
-            count_of_samples = len(available_q)/10
-        else:
-            count_of_samples = int(len(available_q)/10)+1
-        num_sample = random.randint(0, count_of_samples)
-        if num_sample != count_of_samples:
-            sample = available_q[10*num_sample:10*num_sample+10]
-        else:
-            last_index = len(available_q)-1
-            sample = available_q[10*num_sample:last_index]
-        return sample.values
+    def get_statistics(self, user):
+        local_stat = len(User_Question.objects.filter(user=user))
+        global_stat = len(Question_Mark.objects.all())
 
-    def convert_to_json(self, sample):
-        result = {"questions": []}
-        for s in sample:
-            result["questions"].append({"id": s[0], "question": s[1]})
-        return result
+        return {"local": local_stat, "global": global_stat}
+    
+    def filter_question(self, question, user, unavailable_questions, user_questions):
+        for q in unavailable_questions:
+            if q.question == question:
+                return False
+        for q in user_questions:
+            if q.question == question:
+                return False
+        return True
+        
+    def get_questions(self, user, sample_size=10):
+        all_questions = Question.objects.all()
+        user_questions = User_Question.objects.filter(user=user)
+        unavailable_questions = Question_Mark.objects.filter()
+        questions = []
 
+        for q in all_questions:
+            if not self.filter_question(q, user, unavailable_questions, user_questions):
+                questions.append(q)
+            if len(questions) == sample_size:
+                break
+        return questions
+    
+    def convert_to_json(self, questions):
+        res = []
+        for q in questions:
+            temp = {"id": q.id,
+                    "question":q.question}
+            res.append(temp)
 
     def post(self, request):
-        sample = self.get_q()
-        result = self.convert_to_json(sample)
+        user = request.user
+        stat = self.get_statistics(user)
+        qs = self.get_questions(user)
+        q_json = self.convert_to_json(qs)
+        res = {"stat": stat, "questions": q_json}
         return Response(data = result, status = status.HTTP_200_OK)
 
 

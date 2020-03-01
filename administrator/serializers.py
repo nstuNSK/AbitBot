@@ -11,6 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "login",
+            "isAdmin",
             "password",
             "date_joined",
             "firstName",
