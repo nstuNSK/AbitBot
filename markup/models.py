@@ -1,3 +1,38 @@
 from django.db import models
+from administrator.models import User
 
-# Create your models here.
+class Question(models.Model):
+    """Вопрос для разметки"""
+
+    question = models.TextField(verbose_name="Текст вопроса")
+    answer = models.TextField(verbose_name="Ответ на вопрос")
+    isAvailable = models.BooleanField(verbose_name="Доступен")
+
+    class Meta:
+        verbose_name = "Вопрос для разметки"
+        verbose_name_plural = "Вопросы для разметки"
+
+class Mark(models.Model):
+    """Класс для разметки"""
+
+    name = moedls.CharField(max_length=100, verbose_name="Название класса")
+
+    class Meta:
+        verbose_name = "Класс для разметки"
+        verbose_name_plural = "Классы для разметки"
+
+class User_Question(models.Model):
+    """Связующая между пользователем и вопросом"""
+
+    user = models.ForeignKey(User, related_name='questions', verbose_name="Пользователь")
+    question = models.ForeignKey(Question, related_name='mark_questions', verbose_name="Вопрос")
+    mark = models.ForeignKey(Mark, related_name='questions', verbose_name="Метка класса")
+
+class Question_Mark(models.Model):
+    """Связующая между вопросом и меткой класса"""
+
+    question = models.ForeignKey(Question, related_name='to_mark', verbose_name="Вопрос")
+    mark = models.ForeignKey(Mark, related_name='marks_questions', verbose_name="Класс")
+
+
+

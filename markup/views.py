@@ -29,8 +29,27 @@ def index(request):
 	    template=loader.get_template("index2.html")
 	    return HttpResponse(template.render())
 
-class Class_Add(APIView):
+class LoginView(APIView):
     permission_classes = (AllowAny,)
+    parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
+
+    def post(self, request):
+        data = request.data
+        if "login" in data and "password" in data:
+            try:
+                user = User.objects.get(login = data["login"])
+                    if user.check_password(data["password"]):
+                        jwt = getJWT(user)
+                        serializer = UserSerializer(user)
+                        res = {"jwt": jwt}
+                        res.update(serializer.data)
+                        return Response(data = res, status = status.HTTP_200_OK)
+            except User.DoesNotExist:
+                return Response(status = status.HTTP_400_BAD_REQUEST)
+
+class Class_Add(APIView):
+    permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
