@@ -15,7 +15,7 @@ class Question(models.Model):
 class Mark(models.Model):
     """Класс для разметки"""
 
-    name = moedls.CharField(max_length=100, verbose_name="Название класса")
+    name = moedls.CharField(max_length=100, verbose_name="Название класса", unique=True)
 
     class Meta:
         verbose_name = "Класс для разметки"

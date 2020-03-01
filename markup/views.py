@@ -12,7 +12,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.staticfiles import finders
 from django.http import HttpResponse
 from django.template import Context, loader
-from .models import User_Question, Question_Mark
+from .models import Question, Mark, User_Question, Question_Mark
 
 from AbitBot import settings
 import pandas as pd
@@ -54,18 +54,55 @@ class Class_Add(APIView):
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
+    def check_question(self, question):
+        qs = User_Question.objects.filter(question=question)
+        if len(qs)>=3:
+            marks = []
+            for q in qs:
+                marks.append(q.mark.name)
+            unique_marks = list(set(marks))
+            max_count = 0
+            max_count_mark = ""
+            for m in unique_marks:
+                temp = marks.count(m)
+                if temp > max_count:
+                    max_count = temp
+                    max_count_mark = m
+            if max_count/len(marks) >= 2/3:
+                return (True, max_count_mark)
+        return (False, None)
+
+
+    def add_class(self, q_id, mark_id, user):
+        question = Question.objects.get(id=q_id)
+        mark = Mark.objects.get(id=mark_id)
+        User_Question.objects.create(user=user, question=question, mark=mark)
+        User_Question.save()
+        checked = self.check_question(question)[0]
+        if checked[0]:
+            mark_name = checked[1]
+            t_mark = Mark.objects.get(name=mark_name)
+            Question_Mark.objects.create(question=question, mark=t_mark)
+            Question_Mark.save()
+        
+
     
     def post(self, request):
-        data = request.data
-        if "mas" in data:
-            questions = data['mas']
+        user = request.user
+        if "mas" in request.data:
             try:
-                self.add_classes(questions)
+                questions = request.data["mas"]
+                for q in questions:
+                    self.add_class(q['id'], q['type'], user)
                 res = {"status": "success", "status_code": "200"}
                 return Response(data = res, status = status.HTTP_200_OK)
             except:
                 res = {"status": "failed", "status_code": "400"}
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
+        else:
+            res = {"status": "failed", "status_code": "400"}
+            return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
+
 
 class Get_Questions(APIView):
     permission_classes = (IsAuthenticated,)
