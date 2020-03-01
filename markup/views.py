@@ -68,7 +68,7 @@ class Class_Add(APIView):
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
 class Get_Questions(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
