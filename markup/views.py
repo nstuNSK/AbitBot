@@ -211,10 +211,10 @@ class SecretDB(APIView):
         if "secret" in data and data['secret'] == settings.SECRET_DB:
             if "question_table" in data['tables']:
                 res = {"status": "start filling question table"}
-                return ResponseThen(self.fill_question_table, data = res, status = status.HTTP_200_OK)
+                return ResponseThen(data = res, then_callback = self.fill_question_table, status = status.HTTP_200_OK)
             if "mark_table" in data['tables']:
                 res = {"status": "start filling mark table"}
-                return ResponseThen(self.fill_mark_table, data = res, status = status.HTTP_200_OK)
+                return ResponseThen(data = res, then_callback = self.fill_mark_table, status = status.HTTP_200_OK)
             res = {"success": True}
             
         if "test" in data:
