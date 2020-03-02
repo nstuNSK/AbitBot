@@ -12,11 +12,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.contrib.staticfiles import finders
 from django.http import HttpResponse
 from django.template import Context, loader
-from administrator.models import User
-from administrator.serializers import UserSerializer
-from administrator.views import getJWT
 from .models import Question, Mark, User_Question, Question_Mark
-
 
 from AbitBot import settings
 import pandas as pd
@@ -44,14 +40,12 @@ class LoginView(APIView):
         if "login" in data and "password" in data:
             try:
                 user = User.objects.get(login = data["login"])
-                if user.check_password(data["password"]):
-                    jwt = getJWT(user)
-                    serializer = UserSerializer(user)
-                    res = {"jwt": jwt}
-                    res.update(serializer.data)
-                    return Response(data = res, status = status.HTTP_200_OK)
-                else:
-                    print("bad pass")
+                    if user.check_password(data["password"]):
+                        jwt = getJWT(user)
+                        serializer = UserSerializer(user)
+                        res = {"jwt": jwt}
+                        res.update(serializer.data)
+                        return Response(data = res, status = status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response(status = status.HTTP_400_BAD_REQUEST)
 
@@ -83,11 +77,13 @@ class Class_Add(APIView):
         question = Question.objects.get(id=q_id)
         mark = Mark.objects.get(id=mark_id)
         User_Question.objects.create(user=user, question=question, mark=mark)
-        checked = self.check_question(question)
+        User_Question.save()
+        checked = self.check_question(question)[0]
         if checked[0]:
             mark_name = checked[1]
             t_mark = Mark.objects.get(name=mark_name)
             Question_Mark.objects.create(question=question, mark=t_mark)
+            Question_Mark.save()
         
 
     
@@ -101,7 +97,6 @@ class Class_Add(APIView):
                 res = {"status": "success", "status_code": "200"}
                 return Response(data = res, status = status.HTTP_200_OK)
             except:
-                raise
                 res = {"status": "failed", "status_code": "400"}
                 return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
         else:
@@ -117,19 +112,8 @@ class Get_Questions(APIView):
     def get_statistics(self, user):
         local_stat = len(User_Question.objects.filter(user=user))
         global_stat = len(Question_Mark.objects.all())
-        total = len(Question.objects.all())
-        marks = Mark.objects.all()
-        local_marks_stat = []
-        for m in marks:
-            temp = {"mark_id": m.id, "mark_name": m.name, "count": len(User_Question.objects.filter(mark=m, user=user))}
-            local_marks_stat.append(temp)
-        global_marks_stat = []
-        for m in marks:
-            temp = {"mark_id": m.id, "mark_name": m.name, "count": len(Question_Mark.objects.filter(mark=m))}
-            global_marks_stat.append(temp)
 
-        return {"markup_stat": {"local": local_stat, "global": global_stat, "total": total},
-                "marks_stat":  {"local": local_marks_stat, "global": global_marks_stat}}
+        return {"local": local_stat, "global": global_stat}
     
     def filter_question(self, question, user, unavailable_questions, user_questions):
         for q in unavailable_questions:
@@ -147,7 +131,7 @@ class Get_Questions(APIView):
         questions = []
 
         for q in all_questions:
-            if self.filter_question(q, user, unavailable_questions, user_questions):
+            if not self.filter_question(q, user, unavailable_questions, user_questions):
                 questions.append(q)
             if len(questions) == sample_size:
                 break
@@ -159,7 +143,6 @@ class Get_Questions(APIView):
             temp = {"id": q.id,
                     "question":q.question}
             res.append(temp)
-        return res
 
     def post(self, request):
         user = request.user
@@ -167,7 +150,7 @@ class Get_Questions(APIView):
         qs = self.get_questions(user)
         q_json = self.convert_to_json(qs)
         res = {"stat": stat, "questions": q_json}
-        return Response(data = res, status = status.HTTP_200_OK)
+        return Response(data = result, status = status.HTTP_200_OK)
 
 
 class SecretDB(APIView):
@@ -176,10 +159,11 @@ class SecretDB(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
     def fill_question_table(self, data):
-        for index, row in data.iterrows():
-            question = row['q']
-            answer = row['a']
+        for item in data:
+            question = data['question']
+            answer = data['answer']
             Question.objects.create(question=question, answer=answer)
+        Question.save()
     
     def fill_mark_table(self):
         data = [
@@ -202,47 +186,15 @@ class SecretDB(APIView):
         ]
         for i in range(1, len(data)+1):
             Mark.objects.create(id=i, name=data[i-1])
+        Mark.save()
     
     def post(self, request):
         data = request.data
-        if "secret" in data and data['secret'] == settings.SECRET_DB:
-            if "question_table" in data['tables']:
-                df = pd.read_csv(settings.DATA_CSV_PATH)
-                self.fill_question_table(df)
-            if "mark_table" in data['tables']:
-                self.fill_mark_table()
-            res = {"success": True}
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "test" in data:
-            qs = Question.objects.all()
-            ms = Mark.objects.all()
-            res = {
-                    "questions": [],
-                    "marks": []
-                   }
-            for i in range(10):
-                res["questions"].append(qs[i].question)
-            for m in ms:
-                res['marks'].append(m.name)
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "test_UQ" in data:
-            items = User_Question.objects.all()
-            res = []
-            for i in items:
-                res.append({"user_id": i.user.id, "question_id": i.question.id, "mark_id": i.mark.id})
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "clear_UQ" in data:
-            User_Question.objects.all().delete()
-            return Response(status = status.HTTP_200_OK)
-        if "test_QM" in data:
-            items = Question_Mark.objects.all()
-            res = []
-            for i in items:
-                res.append({"mark_id": i.mark.id, "question_id": i.question.id})
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "clear_QM" in data:
-            Question_Mark.objects.all().delete()
-            return Response(status = status.HTTP_200_OK)
+        if "secret" in data and data['secrert'] == settings.SECRET_DB:
+            """open csv here and create data object for fill_question_table"""
+            self.fill_question_table()
+            self.fill_mark_table()
+            
 
 
         
