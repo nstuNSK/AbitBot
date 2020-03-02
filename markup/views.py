@@ -244,6 +244,3 @@ class SecretDB(APIView):
         if "clear_QM" in data:
             Question_Mark.objects.all().delete()
             return Response(status = status.HTTP_200_OK)
-
-
-        
