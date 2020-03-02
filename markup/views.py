@@ -127,7 +127,7 @@ class Get_Questions(APIView):
     def get_questions(self, user, sample_size=10):
         all_questions = Question.objects.all()
         user_questions = User_Question.objects.filter(user=user)
-        unavailable_questions = Question_Mark.objects.filter()
+        unavailable_questions = Question_Mark.objects.all()
         questions = []
 
         for q in all_questions:
@@ -151,6 +151,50 @@ class Get_Questions(APIView):
         q_json = self.convert_to_json(qs)
         res = {"stat": stat, "questions": q_json}
         return Response(data = result, status = status.HTTP_200_OK)
+
+
+class SecretDB(APIView):
+    permission_classes = (AllowAny,)
+    parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
+
+    def fill_question_table(self, data):
+        for item in data:
+            question = data['question']
+            answer = data['answer']
+            Question.objects.create(question=question, answer=answer)
+        Question.save()
+    
+    def fill_mark_table(self):
+        data = [
+            'Прием документов',
+            'Порядок приема',
+            'Направления подготовки',
+            'Начисление стипендии',
+            'Вступительные экзамены',
+            'ЕГЭ',
+            'Перевод из других ВУЗов',
+            'Общежития',
+            'Списки поступающих',
+            'Приказы о зачислении',
+            'Военная кафедра',
+            'Трудоустройство',
+            'Личный кабинет',
+            'Контакты',
+            'Несколько вопросов',
+            'Мусор'
+        ]
+        for i in range(1, len(data)+1):
+            Mark.objects.create(id=i, name=data[i-1])
+        Mark.save()
+    
+    def post(self, request):
+        data = request.data
+        if "secret" in data and data['secrert'] == settings.SECRET_DB:
+            """open csv here and create data object for fill_question_table"""
+            self.fill_question_table()
+            self.fill_mark_table()
+            
 
 
         

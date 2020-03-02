@@ -6,7 +6,7 @@ class Question(models.Model):
 
     question = models.TextField(verbose_name="Текст вопроса")
     answer = models.TextField(verbose_name="Ответ на вопрос")
-    isAvailable = models.BooleanField(verbose_name="Доступен")
+    # isAvailable = models.BooleanField(verbose_name="Доступен") Is it need!?
 
     class Meta:
         verbose_name = "Вопрос для разметки"
@@ -15,6 +15,7 @@ class Question(models.Model):
 class Mark(models.Model):
     """Класс для разметки"""
 
+    id = models.IntegerField(verbose_name='id', primary_key=True)
     name = moedls.CharField(max_length=100, verbose_name="Название класса", unique=True)
 
     class Meta:
