@@ -180,9 +180,8 @@ JWT_AUTH = {
 }
 AUTH_USER_MODEL = "administrator.User"
 
-API_KEY = "s13dfget456DADHGWEv34g435f"
-SECRET_DB = "dbsvlJKLnlkHVGKKkhjkhCCYICyyiIYVGTIG"
-
-STATIC_URL = '/static/'
-STATIC_ROOT = '/home/Main/AbitBot/static'
-MEDIA_ROOT = '/home/Main/AbitBot/media'
+try:
+    from .local_settings import *
+    print("loacl settings up!")
+except ImportError:
+    from .deploy_settings import *

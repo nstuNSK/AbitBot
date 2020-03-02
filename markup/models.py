@@ -16,7 +16,7 @@ class Mark(models.Model):
     """Класс для разметки"""
 
     id = models.IntegerField(verbose_name='id', primary_key=True)
-    name = moedls.CharField(max_length=100, verbose_name="Название класса", unique=True)
+    name = models.CharField(max_length=100, verbose_name="Название класса", unique=True)
 
     class Meta:
         verbose_name = "Класс для разметки"
@@ -25,15 +25,17 @@ class Mark(models.Model):
 class User_Question(models.Model):
     """Связующая между пользователем и вопросом"""
 
-    user = models.ForeignKey(User, related_name='questions', verbose_name="Пользователь")
-    question = models.ForeignKey(Question, related_name='mark_questions', verbose_name="Вопрос")
-    mark = models.ForeignKey(Mark, related_name='questions', verbose_name="Метка класса")
+    user = models.ForeignKey(User, related_name='questions', verbose_name="Пользователь", on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='mark_questions', verbose_name="Вопрос", on_delete=models.CASCADE)
+    mark = models.ForeignKey(Mark, related_name='questions', verbose_name="Метка класса", on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = (("user", "question"),)
 class Question_Mark(models.Model):
     """Связующая между вопросом и меткой класса"""
 
-    question = models.ForeignKey(Question, related_name='to_mark', verbose_name="Вопрос")
-    mark = models.ForeignKey(Mark, related_name='marks_questions', verbose_name="Класс")
+    question = models.ForeignKey(Question, related_name='to_mark', verbose_name="Вопрос", on_delete=models.CASCADE)
+    mark = models.ForeignKey(Mark, related_name='marks_questions', verbose_name="Класс", on_delete=models.CASCADE)
 
 
 

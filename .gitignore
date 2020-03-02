@@ -9,3 +9,4 @@ venv/
 .vs/
 static/
 db.sqlite3
+migrations/
