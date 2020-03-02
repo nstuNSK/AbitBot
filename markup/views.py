@@ -110,6 +110,7 @@ class Get_Questions(APIView):
     authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
 
     def get_statistics(self, user):
+        #itsnewfile!
         local_stat = len(User_Question.objects.filter(user=user))
         global_stat = len(Question_Mark.objects.all())
 
