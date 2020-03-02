@@ -55,12 +55,16 @@ class LoginView(APIView):
         data = request.data
         if "login" in data and "password" in data:
             try:
-                user = User.objects.get(login = data["login"])  
-                if user.check_password(data["password"]):
-                    jwt = getJWT(user)
-                    serializer = UserSerializer(user)
-                    res = {"jwt": jwt}
-                    res.update(serializer.data)
+                user = User.objects.get(login = data["login"])
+                if user.isAdmin:
+                    if user.check_password(data["password"]):
+                        jwt = getJWT(user)
+                        serializer = UserSerializer(user)
+                        res = {"jwt": jwt}
+                        res.update(serializer.data)
+                        return Response(data = res, status = status.HTTP_200_OK)
+                else:
+                    res = {"error": "permissions denied", "description":"user is not admin"}
                     return Response(data = res, status = status.HTTP_200_OK)
             except User.DoesNotExist:
                 return Response(status = status.HTTP_400_BAD_REQUEST)

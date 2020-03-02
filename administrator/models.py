@@ -41,6 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     lastName        = models.CharField(max_length = 50, verbose_name = "Фамилия", default = "surname")
     login           = models.CharField(max_length = 50, verbose_name = "Логин", unique = True)
     password        = models.TextField(verbose_name = "Пароль", default = "pass")
+    isAdmin         = models.BooleanField(verbose_name = "Админ", default = False)
 
     is_active       = models.BooleanField(default=True, verbose_name="Аккаунт действует")
     is_staff        = models.BooleanField(default=False, verbose_name="Сотрудник")
