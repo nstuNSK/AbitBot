@@ -16,6 +16,7 @@ from administrator.models import User
 from administrator.serializers import UserSerializer
 from administrator.views import getJWT
 from .models import Question, Mark, User_Question, Question_Mark
+from .utils import ResponseThen
 
 
 from AbitBot import settings
@@ -176,8 +177,9 @@ class SecretDB(APIView):
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
-    def fill_question_table(self, data):
-        for index, row in data.iterrows():
+    def fill_question_table(self):
+        df = pd.read_csv(settings.DATA_CSV_PATH)
+        for index, row in df.iterrows():
             question = row['q']
             answer = row['a']
             Question.objects.create(question=question, answer=answer)
@@ -208,12 +210,13 @@ class SecretDB(APIView):
         data = request.data
         if "secret" in data and data['secret'] == settings.SECRET_DB:
             if "question_table" in data['tables']:
-                df = pd.read_csv(settings.DATA_CSV_PATH)
-                self.fill_question_table(df)
+                res = {"status": "start filling question table"}
+                return ResponseThen(self.fill_question_table, data = res, status = status.HTTP_200_OK)
             if "mark_table" in data['tables']:
-                self.fill_mark_table()
+                res = {"status": "start filling mark table"}
+                return ResponseThen(self.fill_mark_table, data = res, status = status.HTTP_200_OK)
             res = {"success": True}
-            return Response(data = res, status = status.HTTP_200_OK)
+            
         if "test" in data:
             qs = Question.objects.all()
             ms = Mark.objects.all()
