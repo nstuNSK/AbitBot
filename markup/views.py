@@ -229,6 +229,9 @@ class SecretDB(APIView):
             for m in ms:
                 res['marks'].append(m.name)
             return Response(data = res, status = status.HTTP_200_OK)
+        if "clear" in data:
+            Question.objects.all().delete()
+            return Response(status = status.HTTP_200_OK)
         if "test_M":
             ms = Mark.objects.all()
             res = {
