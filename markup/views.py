@@ -263,5 +263,5 @@ class SecretDB(APIView):
             Question_Mark.objects.all().delete()
             return Response(status = status.HTTP_200_OK)
         if "add_mark" in data:
-            Marks.objects.create(id=17, name="Подача заявления о согласии")
+            Mark.objects.create(id=17, name="Подача заявления о согласии")
             return Response(status = status.HTTP_200_OK)
