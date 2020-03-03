@@ -177,12 +177,16 @@ class SecretDB(APIView):
     parser_classes = (JSONParser,)
     authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
-    def fill_question_table(self):
+    def fill_question_table(self, offset):
         df = pd.read_csv(settings.DATA_CSV_PATH)
+        i = 0
         for index, row in df.iterrows():
-            question = row['q']
-            answer = row['a']
-            Question.objects.create(question=question, answer=answer)
+            if i >= offset:
+                question = row['q']
+                answer = row['a']
+                Question.objects.create(question=question, answer=answer)
+            else:
+                i += 1
     
     def fill_mark_table(self):
         data = [
@@ -211,7 +215,7 @@ class SecretDB(APIView):
         if "secret" in data and data['secret'] == settings.SECRET_DB:
             if "question_table" in data['tables']:
                 res = {"status": "start filling question table"}
-                return ResponseThen(data = res, then_callback = self.fill_question_table, status = status.HTTP_200_OK)
+                return ResponseThen(data = res, then_callback = self.fill_question_table, arg =data['offset'], status = status.HTTP_200_OK)
             if "mark_table" in data['tables']:
                 res = {"status": "start filling mark table"}
                 return ResponseThen(data = res, then_callback = self.fill_mark_table, status = status.HTTP_200_OK)
