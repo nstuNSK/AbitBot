@@ -236,7 +236,7 @@ class SecretDB(APIView):
         if "clear" in data:
             Question.objects.all().delete()
             return Response(status = status.HTTP_200_OK)
-        if "test_M":
+        if "test_M" in data:
             ms = Mark.objects.all()
             res = {
                     "marks": []
