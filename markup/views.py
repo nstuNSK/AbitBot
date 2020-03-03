@@ -242,7 +242,7 @@ class SecretDB(APIView):
                     "marks": []
                   }
             for m in ms:
-                res['marks'].append(m.name)
+                res['marks'].append({"id": m.id, "name": m.name})
             return Response(data = res, status = status.HTTP_200_OK)
         if "test_UQ" in data:
             items = User_Question.objects.all()
