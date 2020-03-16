@@ -17,6 +17,7 @@ class Mark(models.Model):
 
     id = models.IntegerField(verbose_name='id', primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Название класса", unique=True)
+    priority = models.IntegerField(verbose_name='Приоритет', default=1)
 
     class Meta:
         verbose_name = "Класс для разметки"

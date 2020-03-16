@@ -6,5 +6,7 @@ urlpatterns = [
     path('add_class/', Class_Add.as_view()),
     path('get_sample/', Get_Questions.as_view()),
     path('login/', LoginView.as_view()),
-    # path('db/', SecretDB.as_view())
+    path('set_priority/', SetPriority.as_view()),
+    path('mark/', Marks.as_view()),
+    path('db/', SecretDB.as_view())
 ]
