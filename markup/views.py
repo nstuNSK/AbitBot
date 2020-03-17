@@ -223,6 +223,27 @@ class SetPriority(APIView):
             res = {"status": "permission denied"}
             return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
+class DeleteMark(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (JSONParser,)
+    authentication_classes = (CsrfExemptSessionAuthentication, JSONWebTokenAuthentication)
+
+    def post(self, request):
+        user = request.user
+        mark_id = request.data['id']
+        if user.isAdmin:
+            try:
+                mark = Mark.objects.get(id=mark_id)
+                mark.delete()
+                return Response(status = status.HTTP_200_OK)
+            except:
+                raise
+                return Response(status = status.HTTP_400_BAD_REQUEST)
+        else:
+            raise
+            return Response(status = status.HTTP_400_BAD_REQUEST)
+
+
 class Marks(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (JSONParser,)

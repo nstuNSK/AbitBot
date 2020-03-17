@@ -8,5 +8,6 @@ urlpatterns = [
     path('login/', LoginView.as_view()),
     path('set_priority/', SetPriority.as_view()),
     path('mark/', Marks.as_view()),
+    path('delete_mark/', DeleteMark.as_view())
     # path('db/', SecretDB.as_view())
 ]
