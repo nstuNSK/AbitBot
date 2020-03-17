@@ -128,11 +128,11 @@ class Get_Questions(APIView):
         marks = Mark.objects.all()
         local_marks_stat = []
         for m in marks:
-            temp = {"mark_id": m.id, "mark_name": m.name, "count": len(User_Question.objects.filter(mark=m, user=user))}
+            temp = {"mark_id": m.id, "mark_name": m.name, "priority": m.priority, "count": len(User_Question.objects.filter(mark=m, user=user))}
             local_marks_stat.append(temp)
         global_marks_stat = []
         for m in marks:
-            temp = {"mark_id": m.id, "mark_name": m.name, "count": len(Question_Mark.objects.filter(mark=m))}
+            temp = {"mark_id": m.id, "mark_name": m.name, "priority": m.priority, "count": len(Question_Mark.objects.filter(mark=m))}
             global_marks_stat.append(temp)
 
         return {"markup_stat": {"local": local_stat, "global": global_stat, "total": total},
