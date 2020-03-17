@@ -58,6 +58,8 @@ class LoginView(APIView):
                     return Response({"descr": "wrong login or password"}, status = status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response(status = status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status = status.HTTP_400_BAD_REQUEST)
 
 class Class_Add(APIView):
     permission_classes = (IsAuthenticated,)
@@ -267,106 +269,106 @@ class Marks(APIView):
         #     res = {"status": "permission denied"}
         #     return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
-class SecretDB(APIView):
-    permission_classes = (AllowAny,)
-    parser_classes = (JSONParser,)
-    authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
+# class SecretDB(APIView):
+#     permission_classes = (AllowAny,)
+#     parser_classes = (JSONParser,)
+#     authentication_classes = (CsrfExemptSessionAuthentication,JSONWebTokenAuthentication)
 
-    def fill_question_table(self, offset):
-        df = pd.read_csv(settings.DATA_CSV_PATH)
-        i = 0
-        for index, row in df.iterrows():
-            if i >= offset:
-                question = row['q']
-                answer = row['a']
-                Question.objects.create(question=question, answer=answer)
-            else:
-                i += 1
+#     def fill_question_table(self, offset):
+#         df = pd.read_csv(settings.DATA_CSV_PATH)
+#         i = 0
+#         for index, row in df.iterrows():
+#             if i >= offset:
+#                 question = row['q']
+#                 answer = row['a']
+#                 Question.objects.create(question=question, answer=answer)
+#             else:
+#                 i += 1
     
-    def fill_mark_table(self):
-        data = [
-            'Прием документов',
-            'Порядок приема',
-            'Направления подготовки',
-            'Начисление стипендии',
-            'Вступительные экзамены',
-            'ЕГЭ',
-            'Перевод из других ВУЗов',
-            'Общежития',
-            'Списки поступающих',
-            'Приказы о зачислении',
-            'Военная кафедра',
-            'Трудоустройство',
-            'Личный кабинет',
-            'Контакты',
-            'Несколько вопросов',
-            'Мусор'
-        ]
-        for i in range(1, len(data)+1):
-            Mark.objects.create(id=i, name=data[i-1])
+#     def fill_mark_table(self):
+#         data = [
+#             'Прием документов',
+#             'Порядок приема',
+#             'Направления подготовки',
+#             'Начисление стипендии',
+#             'Вступительные экзамены',
+#             'ЕГЭ',
+#             'Перевод из других ВУЗов',
+#             'Общежития',
+#             'Списки поступающих',
+#             'Приказы о зачислении',
+#             'Военная кафедра',
+#             'Трудоустройство',
+#             'Личный кабинет',
+#             'Контакты',
+#             'Несколько вопросов',
+#             'Мусор'
+#         ]
+#         for i in range(1, len(data)+1):
+#             Mark.objects.create(id=i, name=data[i-1])
     
-    def post(self, request):
-        data = request.data
-        if "secret" in data and data['secret'] == settings.SECRET_DB:
-            if "question_table" in data['tables']:
-                res = {"status": "start filling question table"}
-                return ResponseThen(data = res, then_callback = self.fill_question_table, arg =data['offset'], status = status.HTTP_200_OK)
-            if "mark_table" in data['tables']:
-                res = {"status": "start filling mark table"}
-                return ResponseThen(data = res, then_callback = self.fill_mark_table, status = status.HTTP_200_OK)
-            res = {"success": True}
+#     def post(self, request):
+#         data = request.data
+#         if "secret" in data and data['secret'] == settings.SECRET_DB:
+#             if "question_table" in data['tables']:
+#                 res = {"status": "start filling question table"}
+#                 return ResponseThen(data = res, then_callback = self.fill_question_table, arg =data['offset'], status = status.HTTP_200_OK)
+#             if "mark_table" in data['tables']:
+#                 res = {"status": "start filling mark table"}
+#                 return ResponseThen(data = res, then_callback = self.fill_mark_table, status = status.HTTP_200_OK)
+#             res = {"success": True}
         
-        if "set_default_priority" in data:
-            marks = Mark.objects.all()
-            for m in marks:
-                m.priority = m.id
-                m.save()
-            res = {"marks": []}
-            for m in marks:
-                res['marks'].append([m.id, m.name, m.priority])
-            return Response(data = res, status = status.HTTP_200_OK)
+#         if "set_default_priority" in data:
+#             marks = Mark.objects.all()
+#             for m in marks:
+#                 m.priority = m.id
+#                 m.save()
+#             res = {"marks": []}
+#             for m in marks:
+#                 res['marks'].append([m.id, m.name, m.priority])
+#             return Response(data = res, status = status.HTTP_200_OK)
             
-        if "test" in data:
-            qs = Question.objects.all()
-            ms = Mark.objects.all()
-            res = {
-                    "questions": [],
-                    "marks": []
-                   }
-            for i in range(10):
-                res["questions"].append(qs[i].question)
-            for m in ms:
-                res['marks'].append([m.id, m.name, m.priority])
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "clear" in data:
-            Question.objects.all().delete()
-            return Response(status = status.HTTP_200_OK)
-        if "test_M" in data:
-            ms = Mark.objects.all()
-            res = {
-                    "marks": []
-                  }
-            for m in ms:
-                res['marks'].append({"id": m.id, "name": m.name})
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "test_UQ" in data:
-            items = User_Question.objects.all()
-            res = []
-            for i in items:
-                res.append({"user_id": i.user.id, "question_id": i.question.id, "mark_id": i.mark.id})
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "clear_UQ" in data:
-            User_Question.objects.all().delete()
-            return Response(status = status.HTTP_200_OK)
-        if "test_QM" in data:
-            items = Question_Mark.objects.all()
-            res = []
-            for i in items:
-                res.append({"mark_id": i.mark.id, "question_id": i.question.id})
-            return Response(data = res, status = status.HTTP_200_OK)
-        if "clear_QM" in data:
-            Question_Mark.objects.all().delete()
-            return Response(status = status.HTTP_200_OK)
-        if "add_mark" in data:
-            Mark.objects.create(id=17, name="Подача заявления о согласии")
-            return Response(status = status.HTTP_200_OK)
+#         if "test" in data:
+#             qs = Question.objects.all()
+#             ms = Mark.objects.all()
+#             res = {
+#                     "questions": [],
+#                     "marks": []
+#                    }
+#             for i in range(10):
+#                 res["questions"].append(qs[i].question)
+#             for m in ms:
+#                 res['marks'].append([m.id, m.name, m.priority])
+#             return Response(data = res, status = status.HTTP_200_OK)
+#         if "clear" in data:
+#             Question.objects.all().delete()
+#             return Response(status = status.HTTP_200_OK)
+#         if "test_M" in data:
+#             ms = Mark.objects.all()
+#             res = {
+#                     "marks": []
+#                   }
+#             for m in ms:
+#                 res['marks'].append({"id": m.id, "name": m.name})
+#             return Response(data = res, status = status.HTTP_200_OK)
+#         if "test_UQ" in data:
+#             items = User_Question.objects.all()
+#             res = []
+#             for i in items:
+#                 res.append({"user_id": i.user.id, "question_id": i.question.id, "mark_id": i.mark.id})
+#             return Response(data = res, status = status.HTTP_200_OK)
+#         if "clear_UQ" in data:
+#             User_Question.objects.all().delete()
+#             return Response(status = status.HTTP_200_OK)
+#         if "test_QM" in data:
+#             items = Question_Mark.objects.all()
+#             res = []
+#             for i in items:
+#                 res.append({"mark_id": i.mark.id, "question_id": i.question.id})
+#             return Response(data = res, status = status.HTTP_200_OK)
+#         if "clear_QM" in data:
+#             Question_Mark.objects.all().delete()
+#             return Response(status = status.HTTP_200_OK)
+#         if "add_mark" in data:
+#             Mark.objects.create(id=17, name="Подача заявления о согласии")
+#             return Response(status = status.HTTP_200_OK)
