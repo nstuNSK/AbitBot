@@ -237,10 +237,8 @@ class DeleteMark(APIView):
                 mark.delete()
                 return Response(status = status.HTTP_200_OK)
             except:
-                raise
                 return Response(status = status.HTTP_400_BAD_REQUEST)
         else:
-            raise
             return Response(status = status.HTTP_400_BAD_REQUEST)
 
 
