@@ -259,15 +259,15 @@ class Marks(APIView):
     
     def post(self, request):
         user = request.user
-        # if user.isAdmin:
-        if self.add_mark(request.data['mark']):
-            return Response(status = status.HTTP_200_OK)
+        if user.isAdmin:
+            if self.add_mark(request.data['mark']):
+                return Response(status = status.HTTP_200_OK)
+            else:
+                res = {"status": "error"}
+                return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
         else:
-            res = {"status": "error"}
+            res = {"status": "permission denied"}
             return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
-        # else:
-        #     res = {"status": "permission denied"}
-        #     return Response(data = res, status = status.HTTP_400_BAD_REQUEST)
 
 # class SecretDB(APIView):
 #     permission_classes = (AllowAny,)
