@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+admin.site.register(Question)
+admin.site.register(Mark)
+admin.site.register(User_Question)
+admin.site.register(Question_Mark)
