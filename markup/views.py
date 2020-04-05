@@ -180,13 +180,26 @@ class Get_Questions(APIView):
             res.append(temp)
         return res
 
+    def get_admin_stat(self, user):
+        if user.isAdmin:
+            res = []
+            accounts = User.objects.filter(id__gt=2)
+            print(accounts)
+            for acc in accounts:
+                count = len(User_Question.objects.filter(user=acc))
+                print(count)
+                res.append({"name": acc.login, "count": count})
+            return res
+        else:
+            return []
     def post(self, request):
         user = request.user
         stat = self.get_statistics(user)
         qs = self.get_questions(user)
         q_json = self.convert_to_json(qs)
         marks = self.get_marks()
-        res = {"stat": stat, "questions": q_json, "marks": marks, "is_admin": user.isAdmin}
+        admin_stat = self.get_admin_stat(user)
+        res = {"stat": stat, "questions": q_json, "marks": marks, "is_admin": user.isAdmin, "admin_stat": admin_stat}
         return Response(data = res, status = status.HTTP_200_OK)
 
 class SetPriority(APIView):
