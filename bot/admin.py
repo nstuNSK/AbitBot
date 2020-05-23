@@ -5,6 +5,7 @@ class ScenarioAdmin(admin.ModelAdmin):
     list_display=(
         "id",
         "question",
+        "answer",
         "positive",
         "negative"
     )
