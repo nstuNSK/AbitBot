@@ -12,6 +12,7 @@ from . import keyboards
 from administrator.models import *
 from django.core.paginator import Paginator
 from bot.listAPI import *
+from .models import *
 
 SERVICE_KEY = "c1a71290c1a71290c1a71290b7c1cfa9fecc1a7c1a712909dcf1906a5e4cdbd9fbe3703"
 FREQUENCY_FEEDBACK = 0.9
@@ -200,6 +201,7 @@ def get_result(pay,user):
 
 
 def data_processing(id, pay, msg):
+    msgs = vk.method("messages.getHistory", {"count": 8, "user_id": id})
     user = Account.objects.get_or_create(id = id)[0]
     if pay=='"command":"start"' or pay == "admin" or "привет" in msg.lower():
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
@@ -283,7 +285,7 @@ def data_processing(id, pay, msg):
                 if length>=2:
                     search_direction(user = user, type = "SUBJECTS")
                 else:
-                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
         else:
             add_sub(user = user, sub = pay)
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ADD_MSG")), "keyboard":key['subjects']})
@@ -356,10 +358,33 @@ def data_processing(id, pay, msg):
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Вы успешно добавлены в систему!", "keyboard": key['list']})
         else:
             vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Код не найден.", "keyboard": key['list']})
-
-
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
+    elif msg == "!q":
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Чем могу помочь?", "keyboard": get_main_keyboard(user = user)})
+    elif msgs[1] == "Чем могу помочь?":
+        for item in Keyword.objects.all():
+            if item.word.lower in msgs[0].lower():
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
+            break
+    elif msgs[3] == "Чем могу помочь?":
+        for item in Keyword.objects.all():
+            if item.word.lower in msgs[2].lower():
+                if 'да' in msgs[0].lower():
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer, "keyboard": get_main_keyboard(user = user)})
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Ваш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
+                else:
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Сформулируйте вопрос по другому", "keyboard": get_main_keyboard(user = user)})
+            break
+    elif msgs[6] == "Чем могу помочь?":
+        for item in Keyword.objects.all():
+            if item.word.lower in msgs[5].lower():
+                if 'да' in msgs[0].lower():
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.positive, "keyboard": get_main_keyboard(user = user)})
+                else:
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.negative, "keyboard": get_main_keyboard(user = user)})
+                vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
+            break
     else:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ERROR")), "keyboard": get_main_keyboard(user = user)})
     user.random_id = user.random_id + 1
