@@ -202,7 +202,6 @@ def get_result(pay,user):
 
 def data_processing(id, pay, msg):
     msgs = vk.method("messages.getHistory", {"count": 8, "user_id": id})["items"]
-    msgs = [item["text"] for item in msgs]
     user = Account.objects.get_or_create(id = id)[0]
     if pay=='"command":"start"' or pay == "admin" or "привет" in msg.lower():
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
@@ -364,24 +363,24 @@ def data_processing(id, pay, msg):
     elif msg == "!q":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": str(msgs), "keyboard": get_main_keyboard(user = user)})
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Чем могу помочь?", "keyboard": get_main_keyboard(user = user)})
-    elif msgs[1] == "Чем могу помочь?":
+    elif msgs[1]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[0].lower():
+            if item.word.lower in msgs[0]["text"].lower():
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
             break
-    elif msgs[3] == "Чем могу помочь?":
+    elif msgs[3]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[2].lower():
-                if 'да' in msgs[0].lower():
+            if item.word.lower in msgs[2]["text"].lower():
+                if 'да' in msgs[0]["text"].lower():
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer, "keyboard": get_main_keyboard(user = user)})
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Ваш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Сформулируйте вопрос по другому", "keyboard": get_main_keyboard(user = user)})
             break
-    elif msgs[6] == "Чем могу помочь?":
+    elif msgs[6]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[5].lower():
-                if 'да' in msgs[0].lower():
+            if item.word.lower in msgs[5]["text"].lower():
+                if 'да' in msgs[0]["text"].lower():
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.positive, "keyboard": get_main_keyboard(user = user)})
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.negative, "keyboard": get_main_keyboard(user = user)})
