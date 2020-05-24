@@ -366,12 +366,12 @@ def data_processing(id, pay, msg):
         
     elif msgs[1]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[0]["text"].lower():
+            if item.word.lower() in msgs[0]["text"].lower():
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
             break
     elif msgs[3]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[2]["text"].lower():
+            if item.word.lower() in msgs[2]["text"].lower():
                 if 'да' in msgs[0]["text"].lower():
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer, "keyboard": get_main_keyboard(user = user)})
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Ваш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
@@ -380,7 +380,7 @@ def data_processing(id, pay, msg):
             break
     elif msgs[6]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
-            if item.word.lower in msgs[5]["text"].lower():
+            if item.word.lower() in msgs[5]["text"].lower():
                 if 'да' in msgs[0]["text"].lower():
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.positive, "keyboard": get_main_keyboard(user = user)})
                 else:
