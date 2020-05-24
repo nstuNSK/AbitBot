@@ -361,8 +361,9 @@ def data_processing(id, pay, msg):
     elif msg == "Бу!":
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("FEAR_MSG")), "keyboard": get_main_keyboard(user = user)})
     elif msg == "!q":
-        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": str(msgs), "keyboard": get_main_keyboard(user = user)})
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Чем могу помочь?", "keyboard": get_main_keyboard(user = user)})
+        vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": str(msgs), "keyboard": get_main_keyboard(user = user)})
+        
     elif msgs[1]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
             if item.word.lower in msgs[0]["text"].lower():
