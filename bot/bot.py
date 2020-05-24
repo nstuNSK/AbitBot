@@ -373,8 +373,7 @@ def data_processing(id, pay, msg):
         for item in Keyword.objects.all():
             if item.word.lower() in msgs[2]["text"].lower():
                 if 'да' in msgs[0]["text"].lower():
-                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer, "keyboard": get_main_keyboard(user = user)})
-                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Ваш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
+                    vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer + "\nВаш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Сформулируйте вопрос по другому", "keyboard": get_main_keyboard(user = user)})
             break
