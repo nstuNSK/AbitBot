@@ -202,6 +202,7 @@ def get_result(pay,user):
 
 def data_processing(id, pay, msg):
     msgs = vk.method("messages.getHistory", {"count": 8, "user_id": id})["items"]
+    msgs = [item["text"] for item in msgs]
     user = Account.objects.get_or_create(id = id)[0]
     if pay=='"command":"start"' or pay == "admin" or "привет" in msg.lower():
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("START"))})
