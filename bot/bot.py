@@ -368,7 +368,7 @@ def data_processing(id, pay, msg):
         for item in Keyword.objects.all():
             if item.word.lower() in msgs[0]["text"].lower():
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
-            break
+                break
     elif msgs[3]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
             if item.word.lower() in msgs[2]["text"].lower():
@@ -376,7 +376,7 @@ def data_processing(id, pay, msg):
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.answer + "\n\nВаш вопрос решен?", "keyboard": get_main_keyboard(user = user)})
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": "Сформулируйте вопрос по другому", "keyboard": get_main_keyboard(user = user)})
-            break
+                break
     elif msgs[5]["text"] == "Чем могу помочь?":
         for item in Keyword.objects.all():
             if item.word.lower() in msgs[4]["text"].lower():
@@ -385,7 +385,7 @@ def data_processing(id, pay, msg):
                 else:
                     vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.negative, "keyboard": get_main_keyboard(user = user)})
                 vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": item.scenario.question, "keyboard": get_main_keyboard(user = user)})
-            break
+                break
     else:
         vk.method("messages.send", {"random_id": user.random_id, "user_id": id, "message": random.choice(from_pay_to_msg("ERROR")), "keyboard": get_main_keyboard(user = user)})
     user.random_id = user.random_id + 1
